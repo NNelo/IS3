@@ -1,0 +1,23 @@
+Punto 2
+	git init
+	touch readme.md
+	git add .
+	git commit -m "agregando readme"
+
+Punto 3
+	git remote add origin https://github.com/NNelo/IS3.git
+	git push -u origin master
+
+Punto 4
+	git push origin rama1
+	pull request
+	merge on github
+
+	Refinición de "pull request"
+		En un contexto de un repositorio con varias ramas, se puede querer que cierto código en alguna de las ramas (ej: RAMA A) en otra rama (llamemos RAMA B). Para cumplir con tal comedido, se puede hacer un pull request. Esto consiste en que la rama A solicita enviar código a la rama B, quien la unirá luego con un Merge
+
+https://help.github.com/en/articles/about-pull-requests#about-pull-requests
+
+
+
+TRAER JDK + IDE JAVA

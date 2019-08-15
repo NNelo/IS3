@@ -1,4 +1,4 @@
-    
+
 Punto 2
 	git init
 	touch readme.md
@@ -91,3 +91,30 @@ Common mergetool from editors will display both LOCAL and REMOTE so you can deci
 
 Punto 5 con p4merge + tortoise en segundo clon
 
+C:\Users\nelon\Desktop\Segundo clon\IS3>git commit -m "modificando readme desde clon 2"
+[master 16204ba] modificando readme desde clon 2
+ 1 file changed, 3 insertions(+)
+
+C:\Users\nelon\Desktop\Segundo clon\IS3>git push
+To https://github.com/NNelo/IS3.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/NNelo/IS3.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+
+tortoise pull 
+
+![Alt text](tortoise_conflict.png)
+
+solving conflicts
+![Alt text](p4merge.png)
+
+
+LOCAL - the head for the file(s) from the current branch on the machine that you are using.
+REMOTE - the head for files(s) from a remote location that you are trying to merge into your LOCAL branch.
+BASE - the common ancestor(s) of LOCAL and BASE.
+MERGED - the tag / HEAD object after the merge - this is saved as a new commit.

@@ -88,3 +88,6 @@ BASE - the common ancestor(s) of LOCAL and BASE.
 MERGED - the tag / HEAD object after the merge - this is saved as a new commit.
 Common mergetool from editors will display both LOCAL and REMOTE so you can decide which changes to keep. Please read this tutorial explaining the HEAD objects if you do not know what it is. It will help your understanding of Git tremendously.
 
+
+Punto 5 con p4merge + tortoise
+

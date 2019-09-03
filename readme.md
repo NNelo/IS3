@@ -1,15 +1,18 @@
+## Trabajo Práctico 1 - Git Básico
 
-Punto 2
+#### 1- Instalar Git
+
+#### 2- Crear un repositorio local y agregar archivos
 	git init
 	touch readme.md
 	git add .
 	git commit -m "agregando readme"
 
-Punto 3
+#### 3- Crear un repositorio remoto
 	git remote add origin https://github.com/NNelo/IS3.git
 	git push -u origin master
 
-Punto 4
+#### 4- Familiarizarse con el concepto de Pull Request
 	git push origin rama1
 	pull request
 	merge on github
@@ -20,13 +23,9 @@ Punto 4
 https://help.github.com/en/articles/about-pull-requests#about-pull-requests
 
 
+#### 5- Mergear código con conflictos
 
-TRAER JDK + IDE JAVA
-
-
-Punto 5
-
-
+```bash
 $>Segundo clon\IS3>git commit -m "Se agregan lineas 1 y 3 a readme en segundo clon"
 [master 40b28bb] Se agregan lineas 1 y 3 a readme en segundo clon
  1 file changed, 3 insertions(+)
@@ -78,19 +77,11 @@ C:\Users\nelon\Desktop\Segundo clon\IS3>git add .
 
 C:\Users\nelon\Desktop\Segundo clon\IS3>git commit -m "solucionando conflictos"
 [master 5c06d07] solucionando conflictos
+```
 
-Concepts for resolving Git conflicts
-For using mergetool in git, we need to understand the following terminology to understand what is being merged:
+Segundo intento usando p4merge + tortoise en segundo clon
 
-LOCAL - the head for the file(s) from the current branch on the machine that you are using.
-REMOTE - the head for files(s) from a remote location that you are trying to merge into your LOCAL branch.
-BASE - the common ancestor(s) of LOCAL and BASE.
-MERGED - the tag / HEAD object after the merge - this is saved as a new commit.
-Common mergetool from editors will display both LOCAL and REMOTE so you can decide which changes to keep. Please read this tutorial explaining the HEAD objects if you do not know what it is. It will help your understanding of Git tremendously.
-
-
-Punto 5 con p4merge + tortoise en segundo clon
-
+```bash
 C:\Users\nelon\Desktop\Segundo clon\IS3>git commit -m "modificando readme desde clon 2"
 [master 16204ba] modificando readme desde clon 2
  1 file changed, 3 insertions(+)
@@ -104,7 +95,7 @@ hint: not have locally. This is usually caused by another repository pushing
 hint: to the same ref. You may want to first integrate the remote changes
 hint: (e.g., 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-
+```
 
 tortoise pull 
 

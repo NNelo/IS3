@@ -245,8 +245,486 @@ C:\Users\nelon\Desktop\TP2-maven\maven\vacio>mvn clean install
 Analicemos el comando ejecutado, la instrucción install determina que debe ejecutarse el ciclo de vida default en orden (validate, compile, test, package, verify, install), el resultado será el proyecto compilado y empaquetado para ser usado a nivel local, directamente o como dependencia de otros proyectos. 
 El comando clean que lo precede indica que el proyecto debe ser limpiado antes de comenzar las etapas mencionadas anteriormente. Esta limpieza implica remover todos los archivos generados por el build que se haya hecho previamente. En conclusión, el proyecto pasa previamente por el ciclo de clean antes del default.
 
-Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.5/plexus-utils-3.0.5.pom
+La estructura del proyecto queda como sigue
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/vacio$ tree
+.
+├── pom.xml
+└── target
+    ├── maven-archiver
+    │   └── pom.properties
+    └── proyecto-01-0.1-SNAPSHOT.jar
 
+2 directories, 3 files
+```
+
+
+#### 4- Maven Continuación
+
+- Generar un proyecto con una estructura inicial
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo$ mvn archetype:generate -DgroupId=ar.edu.ucc -DartifactId=ejemplo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.pom
+.
+.
+.
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-archetype-plugin/3.1.2/maven-archetype-plugin-3.1.2.jar (97 kB at 91 kB/s)
+[INFO] 
+[INFO] ------------------< org.apache.maven:standalone-pom >-------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] >>> maven-archetype-plugin:3.1.2:generate (default-cli) > generate-sources @ standalone-pom >>>
+[INFO] 
+[INFO] <<< maven-archetype-plugin:3.1.2:generate (default-cli) < generate-sources @ standalone-pom <<<
+[INFO] 
+[INFO] 
+[INFO] --- maven-archetype-plugin:3.1.2:generate (default-cli) @ standalone-pom ---
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/archetype/archetype-catalog/3.1.2/archetype-catalog-3.1.2.pom
+.
+.
+.
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/ant/ant/1.8.1/ant-1.8.1.jar (1.5 MB at 140 kB/s)
+[INFO] Generating project in Batch mode
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/archetypes/maven-archetype-quickstart/1.0/maven-archetype-quickstart-1.0.pom
+.
+.
+.
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/archetypes/maven-archetype-quickstart/1.0/maven-archetype-quickstart-1.0.jar (4.3 kB at 5.8 kB/s)
+[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Old (1.x) Archetype: maven-archetype-quickstart:1.0
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: basedir, Value: /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo
+[INFO] Parameter: package, Value: ar.edu.ucc
+[INFO] Parameter: groupId, Value: ar.edu.ucc
+[INFO] Parameter: artifactId, Value: ejemplo
+[INFO] Parameter: packageName, Value: ar.edu.ucc
+[INFO] Parameter: version, Value: 1.0-SNAPSHOT
+[INFO] project created from Old (1.x) Archetype in dir: /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/ejemplo
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:31 min
+[INFO] Finished at: 2019-10-02T23:03:20-03:00
+[INFO] ------------------------------------------------------------------------
+
+```
+
+- La estructura generada es la siguiente
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo$ tree
+.
+└── ejemplo
+    ├── pom.xml
+    └── src
+        ├── main
+        │   └── java
+        │       └── ar
+        │           └── edu
+        │               └── ucc
+        │                   └── App.java
+        └── test
+            └── java
+                └── ar
+                    └── edu
+                        └── ucc
+                            └── AppTest.java
+
+12 directories, 3 files
+```
+
+- Compilar el proyecto
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo/ejemplo$ mvn clean package
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< ar.edu.ucc:ejemplo >-------------------------
+[INFO] Building ejemplo 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ ejemplo ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ ejemplo ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/ejemplo/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ ejemplo ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+[INFO] Compiling 1 source file to /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/ejemplo/target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] Source option 5 is no longer supported. Use 6 or later.
+[ERROR] Target option 1.5 is no longer supported. Use 1.6 or later.
+[INFO] 2 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.096 s
+[INFO] Finished at: 2019-10-02T23:08:39-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project ejemplo: Compilation failure: Compilation failure: 
+[ERROR] Source option 5 is no longer supported. Use 6 or later.
+[ERROR] Target option 1.5 is no longer supported. Use 1.6 or later.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+```
+
+Modifico el pom.xml, quedando como sigue
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo$ cat pom.xml 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ar.edu.ucc</groupId>
+  <artifactId>ejemplo</artifactId>
+*********************************************************
+* <properties>											*
+*   <maven.compiler.source>1.6</maven.compiler.source>	*
+*   <maven.compiler.target>1.6</maven.compiler.target>	*
+*  </properties>										*
+*********************************************************
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>ejemplo</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>  
+</project>
+
+```
+
+Ahora intentando, nuevamente compilar el proyecto
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo$ mvn clean package
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< ar.edu.ucc:ejemplo >-------------------------
+[INFO] Building ejemplo 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ ejemplo ---
+[INFO] Deleting /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ ejemplo ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ ejemplo ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+[INFO] Compiling 1 source file to /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ ejemplo ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ ejemplo ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+[INFO] Compiling 1 source file to /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/target/test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ ejemplo ---
+[INFO] Surefire report directory: /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/target/surefire-reports
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.pom (1.7 kB at 202 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-providers/2.12.4/surefire-providers-2.12.4.pom (2.3 kB at 4.4 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar (26 kB at 43 kB/s)
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running ar.edu.ucc.AppTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.188 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ ejemplo ---
+[INFO] Building jar: /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo/target/ejemplo-1.0-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  37.425 s
+[INFO] Finished at: 2019-10-02T23:27:15-03:00
+[INFO] ------------------------------------------------------------------------
+
+```
+Analizando el resultado del comando anterior encontramos que el proyecto se compiló, también se descargaron los archivos necesarios para poder hacer el build. Al final, se ejecutan un conjunto de tests y luego se procede con la construcción del jar (ejecutable)
+Podemos observar cómo queda la estructura del proyecto luego del build. 
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo$ tree
+.
+├── pom.xml
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── ar
+│   │           └── edu
+│   │               └── ucc
+│   │                   └── App.java
+│   └── test
+│       └── java
+│           └── ar
+│               └── edu
+│                   └── ucc
+│                       └── AppTest.java
+└── target
+    ├── classes
+    │   └── ar
+    │       └── edu
+    │           └── ucc
+    │               └── App.class
+    ├── ejemplo-1.0-SNAPSHOT.jar
+    ├── generated-sources
+    │   └── annotations
+    ├── generated-test-sources
+    │   └── test-annotations
+    ├── maven-archiver
+    │   └── pom.properties
+    ├── maven-status
+    │   └── maven-compiler-plugin
+    │       ├── compile
+    │       │   └── default-compile
+    │       │       ├── createdFiles.lst
+    │       │       └── inputFiles.lst
+    │       └── testCompile
+    │           └── default-testCompile
+    │               ├── createdFiles.lst
+    │               └── inputFiles.lst
+    ├── surefire-reports
+    │   ├── ar.edu.ucc.AppTest.txt
+    │   └── TEST-ar.edu.ucc.AppTest.xml
+    └── test-classes
+        └── ar
+            └── edu
+                └── ucc
+                    └── AppTest.class
+
+32 directories, 13 files
+```
+
+En esta estructura observamos que se genera un nuevo directorio "target" con los resultados del proceso de compilación. Ponemos especial énfasis en la aparición del archivo "ejemplo-1.0-SNAPSHOT.jar", el ejecutable.
+
+- Ejecutar el programa
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo$ java -cp target/ejemplo-1.0-SNAPSHOT.jar ar.edu.ucc.App
+Hello World!
+```
+
+El parámetro "-cp" (class path) permite especificar cuál clase deberá ser tomada como la main.
+
+
+#### 6- Manejo de dependencias
+
+- Crear un nuevo proyecto con artifactId ejemplo-uber-jar
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven$ mvn archetype:generate -DgroupId=ar.edu.ucc -DartifactId=ejemplo-uber-jar -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+Modificar el código de App.java para agregar utilizar una librería de logging:
+
+```
+package ar.edu.ucc;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        Logger log = LoggerFactory.getLogger(App.class);
+        log.info("Hola Mundo!");
+    }
+}
+```
+
+- Compilar el código e identificar el problema.
+
+Obervación: se modifica el pom.xml igual que para el punto anterior
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar$ mvn clean package
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< ar.edu.ucc:ejemplo-uber-jar >---------------------
+[INFO] Building ejemplo-uber-jar 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ ejemplo-uber-jar ---
+[INFO] Deleting /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ ejemplo-uber-jar ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ ejemplo-uber-jar ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+[INFO] Compiling 1 source file to /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[3,17] package org.slf4j does not exist
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[4,17] package org.slf4j does not exist
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[14,9] cannot find symbol
+  symbol:   class Logger
+  location: class ar.edu.ucc.App
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[14,22] cannot find symbol
+  symbol:   variable LoggerFactory
+  location: class ar.edu.ucc.App
+[INFO] 4 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  14.934 s
+[INFO] Finished at: 2019-10-03T00:02:19-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project ejemplo-uber-jar: Compilation failure: Compilation failure: 
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[3,17] package org.slf4j does not exist
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[4,17] package org.slf4j does not exist
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[14,9] cannot find symbol
+[ERROR]   symbol:   class Logger
+[ERROR]   location: class ar.edu.ucc.App
+[ERROR] /home/netbook/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar/src/main/java/ar/edu/ucc/App.java:[14,22] cannot find symbol
+[ERROR]   symbol:   variable LoggerFactory
+[ERROR]   location: class ar.edu.ucc.App
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+```
+El error básicamente consiste en que al momento del build no se encuentra el componente "package org.slf4j"
+Esto produce errores en la compilación, por lo que el proceso de build falla. 
+
+- Agregar la dependencia necesaria al pom.xml
+
+```
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ar.edu.ucc</groupId>
+  <artifactId>ejemplo-uber-jar</artifactId>
+  <properties>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>ejemplo-uber-jar</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+*************************************************    
+*    <dependency>								*
+*      <groupId>ch.qos.logback</groupId>		*
+*      <artifactId>logback-classic</artifactId>	*
+*      <version>1.2.1</version>					*
+*    </dependency>								*
+*************************************************
+  </dependencies>
+</project>
+
+```
+
+Observaciones: ahora mvn clean package se ejectua sin inconvenientes.
+Aparecen lineas como "Downloading from central: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.22/slf4j-api-1.7.22.pom" que indican que se obtienen del repositorio central de Maven los archivos para cumplir con la dependencia
+
+- Verificar si se genera el archivo jar y ejecutarlo
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar$ java -cp target/ejemplo-uber-jar-1.0-SNAPSHOT.jar ar.edu.ucc.App 
+Exception in thread "main" java.lang.NoClassDefFoundError: org/slf4j/LoggerFactory
+        at ar.edu.ucc.App.main(App.java:14)
+Caused by: java.lang.ClassNotFoundException: org.slf4j.LoggerFactory
+        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)
+        at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+        ... 1 more
+
+```
+
+- Sacar conclusiones y analizar posibles soluciones
+
+El problema del comando anterior es un error de ejecución de Java. Se debe a la falta de una excepción de una clase faltante.
+
+- Implementando una solución
+
+Agregando al pom.xml según https://maven.apache.org/plugins/maven-shade-plugin/examples/includes-excludes.html
+
+```
+```
+- Volver a generar la salida y probar ejecutando
+
+```
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar$ mvn clean package 
+(...)
+netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar$ java -cp target/ejemplo-uber-jar-1.0-SNAPSHOT.jar ar.edu.ucc.App 
+00:21:40.276 [main] INFO ar.edu.ucc.App - Hola Mundo!
+```
+
+#### 7- Utilizar una IDE
+
+#### 8- Build tools para otros lenguages
+
+#### 9- Ejemplo con nodejs (Opcional, pero recomendando)
 
 
 ## Trabajo Práctico 3 -

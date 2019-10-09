@@ -851,7 +851,39 @@ netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ cat package.json
 
 Incluso la instalación del proyecto (con npm install), genera la carpeta "node_modules" que contiene todos los módulos necesarios para que la apliación pueda ser ejecutada en dicho entorno.
 
-## Trabajo Práctico 3 -
+
+## Trabajo Práctico 3 - Software Distribuido - Servicios RESTful
+
+#### 1- Configurar el IDE para trabajar con Spring
+
+Usando Eclipse
+	Spring Tools 4 - for Spring Boot (aka Spring Tol Suite 4) 4.4.0.RELEASE
+	Lombok v1.18.8 "Envious Ferret" 
+
+#### 2- Configurar la aplicación
+
+- Importando nonrest como server en nuestro repositorio
+```
+netbook@netbook-pc:~/Guitar$ tree IS3/payroll
+IS3/payroll
+├── pom.xml
+└── server
+    ├── pom.xml
+    └── src
+        └── main
+            └── java
+                └── payroll
+                    ├── EmployeeController.java
+                    ├── Employee.java
+                    ├── EmployeeNotFoundAdvice.java
+                    ├── EmployeeNotFoundException.java
+                    ├── EmployeeRepository.java
+                    ├── LoadDatabase.java
+                    └── PayrollApplication.java
+
+5 directories, 9 files
+```
+
 
 ## Trabajo Práctico 4 - Introducción a Docker
 

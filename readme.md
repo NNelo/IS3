@@ -1070,6 +1070,44 @@ Veamos un ejemplo, para el caso del GET a employees
 	Vemos cómo la API nos indica también URLs para seguir interactuando como clientes. En este caso cada empleado contiene un atributo links que nos muestra cómo obtener la lista de todos los empleados (lo que acabamos de hacer) o bien cómo consumir únicamente dicho empleado (employees/X)
 	Además, a la hora de elaborar un cliente más complejo que consuma la api, podemos tomar como parámetros las respuestas de la api, para hacer un clinete dinámico y que no tenga URL harcodeadas.	
 	
+#### 5- Agregando el proyecto evolution
+
+- Copiar el contenido de la carpeta evolution a la carpeta ./payroll/server
+- Agregar los archivos a git y generar un nuevo commit.
+- Entender como funciona ResourceAssembler
+
+Conclusiones 
+
+Esta modificación del proyecto simplifica la creación de links. Ahora la insersión de los links se delega a una funcionalidad de Spring HATEOAS, llamada ResourceAssembler
+	```
+	@Component
+	class EmployeeResourceAssembler implements ResourceAssembler<Employee, Resource<Employee>> {
+	
+		@Override
+		public Resource<Employee> toResource(Employee employee) {
+	
+			return new Resource<>(employee,
+				linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
+				linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+		}
+	}
+	```
+	
+	Simplificando la incorporación de los links en los métodos del Controller a:
+	```
+		List<Resource<Employee>> employees = repository.findAll().stream()
+			.map(assembler::toResource)
+			.collect(Collectors.toList());
+		
+		return new Resources<>(employees, 
+			linkTo(methodOn(EmployeeController.class).all()).withSelfRel()); 
+	```
+	
+	En definitiva la linea ".map(assembler::toResource)" concentra las lineas del método ResourceAsembler
+	Esto permite simplificar el código, evitando hardcodear cada una de las respuestas, concentrando todo en una única clase responsable de hacerlo
+
+A nivel respuesta de la API, no vemos diferencias en tanto a los links. La única diferencia es que ahora la clase Employee contempla nuevos datos y métodos (divide name en firstName y lastName)
+
 
 ## Trabajo Práctico 4 - Introducción a Docker
 

@@ -1,4 +1,5 @@
 payroll/PayrollApplication.class
+payroll/EmployeeResourceAssembler.class
 payroll/EmployeeController.class
 payroll/Employee.class
 payroll/EmployeeRepository.class

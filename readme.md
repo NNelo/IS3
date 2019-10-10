@@ -760,6 +760,230 @@ IS3/payroll
 5 directories, 9 files
 ```
 
+- Compilando el proyecto
+
+```
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ mvn clean package spring-boot:repackage 
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< org.springframework.guides:nonrest >-----------------
+[INFO] Building nonrest 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ nonrest ---
+[INFO] Deleting /home/netbook/Guitar/IS3/payroll/server/target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ nonrest ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 7 source files to /home/netbook/Guitar/IS3/payroll/server/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ nonrest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ nonrest ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ nonrest ---
+[INFO] Building jar: /home/netbook/Guitar/IS3/payroll/server/target/nonrest-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.9.RELEASE:repackage (repackage) @ nonrest ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.9.RELEASE:repackage (default-cli) @ nonrest ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  53.777 s
+[INFO] Finished at: 2019-10-09T00:55:03-03:00
+[INFO] ------------------------------------------------------------------------
+```
+
+Observación
+Analizando el comando: mvn clean package spring-boot:repackage
+	clean: remove the target directory with all the build data before starting so that it is fresh.
+	package: If you take a look at the POM for your project you will notice the packaging element is set to jar. This is how Maven knows to produce a JAR file from the above command. Crea la carpeta target 
+	"spring-boot:repackage"
+		Spring Boot Maven Plugin: The Spring Boot Maven Plugin provides Spring Boot support in Maven, allowing you to package executable jar or war archives and run an application “in-place”.
+		Repackages existing JAR and WAR archives so that they can be executed from the command line using java -jar. 
+		
+		
+El resultado del comando anterior es lo siguiente
+```
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ tree
+.
+├── pom.xml
+├── src
+│   └── main
+│       └── java
+│           └── payroll
+│               ├── EmployeeController.java
+│               ├── Employee.java
+│               ├── EmployeeNotFoundAdvice.java
+│               ├── EmployeeNotFoundException.java
+│               ├── EmployeeRepository.java
+│               ├── LoadDatabase.java
+│               └── PayrollApplication.java
+└── target
+    ├── classes
+    │   └── payroll
+    │       ├── Employee.class
+    │       ├── EmployeeController.class
+    │       ├── EmployeeNotFoundAdvice.class
+    │       ├── EmployeeNotFoundException.class
+    │       ├── EmployeeRepository.class
+    │       ├── LoadDatabase.class
+    │       └── PayrollApplication.class
+    ├── generated-sources
+    │   └── annotations
+    ├── maven-archiver
+    │   └── pom.properties
+    ├── maven-status
+    │   └── maven-compiler-plugin
+    │       └── compile
+    │           └── default-compile
+    │               ├── createdFiles.lst
+    │               └── inputFiles.lst
+    ├── nonrest-0.0.1-SNAPSHOT.jar
+    └── nonrest-0.0.1-SNAPSHOT.jar.original
+
+14 directories, 20 files
+```
+
+- Ejecutando el proyecto
+```
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ mvn spring-boot:run
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< org.springframework.guides:nonrest >-----------------
+[INFO] Building nonrest 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:2.1.9.RELEASE:run (default-cli) > test-compile @ nonrest >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ nonrest ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ nonrest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.1.9.RELEASE:run (default-cli) < test-compile @ nonrest <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.9.RELEASE:run (default-cli) @ nonrest ---
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.9.RELEASE)
+
+2019-10-09 00:58:32.045  INFO 5148 --- [           main] payroll.PayrollApplication               : Starting PayrollApplication on netbook-pc with PID 5148 (/home/netbook/Guitar/IS3/payroll/server/target/classes started by netbook in /home/netbook/Guitar/IS3/payroll/server)
+2019-10-09 00:58:32.089  INFO 5148 --- [           main] payroll.PayrollApplication               : No active profile set, falling back to default profiles: default
+2019-10-09 00:58:41.587  INFO 5148 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-09 00:58:42.352  INFO 5148 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 673ms. Found 1 repository interfaces.
+2019-10-09 00:58:47.215  INFO 5148 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eae454e3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-09 00:58:50.478  INFO 5148 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-10-09 00:58:50.922  INFO 5148 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-10-09 00:58:50.926  INFO 5148 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.26]
+2019-10-09 00:58:52.523  INFO 5148 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-10-09 00:58:52.525  INFO 5148 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 19451 ms
+2019-10-09 00:58:54.444  INFO 5148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-09 00:58:56.145  INFO 5148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-09 00:58:56.857  INFO 5148 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+        name: default
+        ...]
+2019-10-09 00:58:57.442  INFO 5148 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.12.Final}
+2019-10-09 00:58:57.452  INFO 5148 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2019-10-09 00:58:58.896  INFO 5148 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-10-09 00:59:00.293  INFO 5148 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-10-09 00:59:06.432  INFO 5148 --- [           main] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@58a61126'
+2019-10-09 00:59:06.475  INFO 5148 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-10-09 00:59:11.762  INFO 5148 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-09 00:59:12.294  WARN 5148 --- [           main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-10-09 00:59:15.013  INFO 5148 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-10-09 00:59:15.082  INFO 5148 --- [           main] payroll.PayrollApplication               : Started PayrollApplication in 48.496 seconds (JVM running for 92.112)
+2019-10-09 00:59:15.635  INFO 5148 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=1, name=Bilbo Baggins, role=burglar)
+2019-10-09 00:59:15.681  INFO 5148 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=2, name=Frodo Baggins, role=thief)
+```
+
+Observación
+```
+netbook@netbook-pc:~$ curl localhost:8080/employees
+[{"id":1,"name":"Bilbo Baggins","role":"burglar"},{"id":2,"name":"Frodo Baggins","role":"thief"}]
+```
+
+También se hizo la misma prueba utilizando Postman
+
+- Ejecutando el proyecto desde Eclipse
+	Run as > Spring Boot App
+
+#### 3- Analizar el proyecto
+
+- Agregar un empleado
+
+```
+	POST localhost:8080/employees
+	body
+		{
+			"name": "Samwise Gamgee",
+			"role": "gardener"
+		}
+	response
+		{
+    		"id": 3,
+    		"name": "Samwise Gamgee",
+    		"role": "gardener"
+		}
+```
+
+Usando Postman
+![Alt text](CapturasTP3/post_new_employee_1.png)
+
+- Borrar un empleado 
+
+```
+	DELETE localhost:8080/employees/3
+	
+```
+
+
+#### 4- Agregando el proyecto RESTful
+-Copiar el contenido de la carpeta rest a la carpeta ./payroll/server
+-Agregar los archivos a git y generar un nuevo commit.
+-Analizar nuevamente el proyecto payroll-server, siguiendo el tutorial.
+-Entender las diferencias entre nonrest y rest
+
 
 ## Trabajo Práctico 4 - Introducción a Docker
 

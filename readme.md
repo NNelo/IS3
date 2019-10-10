@@ -1103,11 +1103,97 @@ Usando Postman
 
 
 #### 4- Agregando el proyecto RESTful
--Copiar el contenido de la carpeta rest a la carpeta ./payroll/server
--Agregar los archivos a git y generar un nuevo commit.
--Analizar nuevamente el proyecto payroll-server, siguiendo el tutorial.
--Entender las diferencias entre nonrest y rest
 
+- Copiar el contenido de la carpeta rest a la carpeta ./payroll/server
+- Agregar los archivos a git y generar un nuevo commit.
+- Analizar nuevamente el proyecto payroll-server, siguiendo el tutorial.
+- Entender las diferencias entre nonrest y rest
+
+Conclusiones
+
+Para que una aplicación sea considerada RESTful no basta con tener peticiones por URL, usar los verbos GET/POST/DELETE ni tener funciones CRUD (esto sería RPC). El hecho de considerarse RESTful implica que las respuestas contengan "hypermedia" o URLs para que se pueda navegar la API, es decir que haya una forma de saber cómo interactuar con la plataforma.
+
+Es por eso, que al observar las diferencias con el proyecto anterior, notamos la presencia de una herramienta llamada Spring HATEOAS que colabora en la inclusión de las URLs en las respuestas para que la API sea más fácilmente consumible por los clientes. 
+
+Incluso, analizando las diferencias entre los proyectos más profundamente, vemos que los cambios más significativos se producen en el EmployeeController, que ahora al momento de procesar las solicutudes de HTTP considera la incorporación de las URL en las respuestas. 
+
+Veamos un ejemplo, para el caso del GET a employees
+	El método anterior
+	```
+		@GetMapping("/employees")
+		List<Employee> all() {
+			return repository.findAll();
+		}
+	```
+	
+	El nuevo método
+	```
+		@GetMapping("/employees")
+		Resources<Resource<Employee>> all() {
+			List<Resource<Employee>> employees = repository.findAll().stream()
+				.map(employee -> new Resource<>(employee,
+					linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
+					linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
+				.collect(Collectors.toList());
+			
+			return new Resources<>(employees,
+				linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
+		}
+	```
+	
+	La respuesta ante un GET localhost:8080/employees
+	```
+	{
+    	"_embedded": {
+        	"employeeList": [{
+            	"id": 1,
+            	"name": "Bilbo Baggins",
+            	"role": "burglar",
+            	"_links": {
+                	"self": {
+                    	"href": "http://localhost:8080/employees/1"
+                	},
+                	"employees": {
+                    	"href": "http://localhost:8080/employees"
+                	}
+            	}
+        	}, {
+            	"id": 2,
+            	"name": "Frodo Baggins",
+            	"role": "thief",
+            	"_links": {
+                	"self": {
+                    	"href": "http://localhost:8080/employees/2"
+                	},
+                	"employees": {
+                    	"href": "http://localhost:8080/employees"
+                	}
+            	}
+        	}, {
+            	"id": 3,
+            	"name": "Samwise Gamgee",
+            	"role": "gardener",
+            	"_links": {
+                	"self": {
+                    	"href": "http://localhost:8080/employees/3"
+                	},
+                	"employees": {
+                    	"href": "http://localhost:8080/employees"
+                	}
+            	}
+        	}]
+    	},
+    	"_links": {
+        	"self": {
+            	"href": "http://localhost:8080/employees"
+        	}
+    	}
+	}
+	```
+	
+	Vemos cómo la API nos indica también URLs para seguir interactuando como clientes. En este caso cada empleado contiene un atributo links que nos muestra cómo obtener la lista de todos los empleados (lo que acabamos de hacer) o bien cómo consumir únicamente dicho empleado (employees/X)
+	Además, a la hora de elaborar un cliente más complejo que consuma la api, podemos tomar como parámetros las respuestas de la api, para hacer un clinete dinámico y que no tenga URL harcodeadas.	
+	
 
 ## Trabajo Práctico 4 - Introducción a Docker
 

@@ -1,0 +1,162 @@
+{
+	"id": "afb4b082-a1e0-4a12-922b-d3b2ac4adc49",
+	"name": "Prueba1",
+	"allTests": [],
+	"timestamp": "2019-10-10T13:59:54.533Z",
+	"collection_id": "a3de1f7a-30c7-4842-8a44-ab0032a49240",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "0",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "a3de1f7a-30c7-4842-8a44-ab0032a49240",
+		"name": "Prueba1",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"variables": [],
+		"order": [
+			"ea06a77a-212b-4c33-8be9-734fe33d4c28",
+			"4a3665f9-e7b6-454c-9ce9-0a04da85f3a6",
+			"5c08b233-c9ff-4170-b72a-7246e0fafe68"
+		],
+		"folders_order": [],
+		"owner": "0",
+		"permissions": {},
+		"favorite": false,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": null,
+	"environment": null,
+	"globals": null,
+	"results": [
+		{
+			"name": "localhost:8080/employees",
+			"id": "ea06a77a-212b-4c33-8be9-734fe33d4c28",
+			"url": "localhost:8080/employees",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"217"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "217",
+			"totalRequestTime": "217",
+			"iterationResults": {}
+		},
+		{
+			"name": "localhost:8080/employees",
+			"id": "4a3665f9-e7b6-454c-9ce9-0a04da85f3a6",
+			"url": "localhost:8080/employees",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"85"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "85",
+			"totalRequestTime": "85",
+			"iterationResults": {}
+		},
+		{
+			"name": "localhost:8080/employees/4",
+			"id": "5c08b233-c9ff-4170-b72a-7246e0fafe68",
+			"url": "localhost:8080/employees/4",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"332"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "332",
+			"totalRequestTime": "332",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 634,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "localhost:8080/employees",
+			"id": "ea06a77a-212b-4c33-8be9-734fe33d4c28",
+			"url": "localhost:8080/employees",
+			"time": "2019-10-10T13:59:54.533Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "localhost:8080/employees",
+			"id": "4a3665f9-e7b6-454c-9ce9-0a04da85f3a6",
+			"url": "localhost:8080/employees",
+			"time": "2019-10-10T13:59:54.533Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "localhost:8080/employees/4",
+			"id": "5c08b233-c9ff-4170-b72a-7246e0fafe68",
+			"url": "localhost:8080/employees/4",
+			"time": "2019-10-10T13:59:54.533Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		}
+	],
+	"synced": false
+}

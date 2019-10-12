@@ -1580,3 +1580,297 @@ Esto de abrir muchos puertos para hacer balanceo de cargas
 Tambien para tener diferentes versiones en distintos puertos (canary)
 	Usa a cierta gente (usuarios) en esa version de la aplicacion
 
+
+## Trabajo Práctico 5 - Imágenes de Docker
+
+
+## Trabajo Práctico 6 - Primeros pasos con Jenkins
+
+#### 1- Poniendo en funcionamiento Jenkins
+
+- Bajar la aplicación y ejecutarla (se evita usar Docker, para no tener que hacer Docker in Docker)
+```
+	netbook@netbook-pc:~/Downloads$ wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+	--2019-10-03 18:28:45--  http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+	Resolving mirrors.jenkins.io (mirrors.jenkins.io)... 52.202.51.185
+	Connecting to mirrors.jenkins.io (mirrors.jenkins.io)|52.202.51.185|:80... connected.
+	HTTP request sent, awaiting response... 302 Found
+	Location: http://ftp-nyc.osuosl.org/pub/jenkins/war-stable/2.190.1/jenkins.war [following]
+	--2019-10-03 18:28:46--  http://ftp-nyc.osuosl.org/pub/jenkins/war-stable/2.190.1/jenkins.war
+	Resolving ftp-nyc.osuosl.org (ftp-nyc.osuosl.org)... 64.50.233.100, 2600:3404:200:237::2
+	Connecting to ftp-nyc.osuosl.org (ftp-nyc.osuosl.org)|64.50.233.100|:80... connected.
+	HTTP request sent, awaiting response... 200 OK
+	Length: 78245883 (75M) [application/x-java-archive]
+	Saving to: ‘jenkins.war’
+	
+	jenkins.war              100%[==================================>]  74,62M   592KB/s    in 2m 40s  
+	
+	2019-10-03 18:31:26 (478 KB/s) - ‘jenkins.war’ saved [78245883/78245883]
+```
+
+Ahora para ejecutarlo 
+
+```
+	netbook@netbook-pc:~$ cd /etc/init.d/
+	netbook@netbook-pc:/etc/init.d$ sudo ./jenkins start
+	[sudo] password for netbook: 
+	Correct java version found
+	[ ok ] Starting jenkins (via systemctl): jenkins.service.
+```
+
+Observación:
+	El servicio está corriendo sobre el puerto 8080
+	
+- Crear el usuario admin inicial. Colocar cualquier valor que considere adecuado.
+	admin, admin, admin, administrator, admin@admin.admin
+
+
+#### 2- Conceptos generales
+
+#### 3- Instalando Plugins y configurando herramientas
+
+- En Administrar Jenkins vamos a la sección de Administrar Plugins
+- De la lista de plugins disponibles instalamos Maven Integration plugin
+- Instalamos sin reiniciar el servidor.
+- Abrir nuevamente página de Plugins y explorar la lista, para familiarizarse qué tipo de plugins hay disponibles.
+- En la sección de administracion abrir la opción de configuracion de herramientas
+- Agregar maven con el nombre de M3 y que se instale automáticamente.
+
+REHACER
+	Instalar plugin de maven desde jenkins 
+	Maven instalation
+		Name M3 
+			Install automatically (por si un agente no tiene todo para buildear, lo instala en caso que no este)
+			
+Seteando M3	
+	Global Tool Configuration
+			Name M3
+			
+Observación 
+	Maven Integration plugin 3.4
+		This plug-in provides, for better and for worse, a deep integration of Jenkins and Maven: Automatic triggers between projects depending on SNAPSHOTs, automated configuration of various Jenkins publishers (Junit, ...).
+
+#### 4- Creando el primer Pipeline Job
+- Crear un nuevo item, del tipo Pipeline con nombre hello-world
+
+Pasos
+	New item
+		name: hello-world
+		tipo: Pipeline
+	Definición del Job
+		Pipeline
+			Script definition
+				sh label: '', script: 'echo Hello World'
+			Se usa lenguaje Groovy + traductor
+	
+- Una vez creado el job, en la sección Pipeline seleccionamos try sample Pipeline y luego Hello World
+
+
+- Guardamos y ejecutamos el Job
+hello-world
+	Build Now
+
+- Analizar la salida del mismo
+	![Alt text](CapturasTP6/hello-world-build-failed-1.png)
+
+Consultando la salida por consola
+```
+Started by user administrator
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] sh
+[Pipeline] End of Pipeline
+org.jenkinsci.plugins.workflow.steps.MissingContextVariableException: Required context class hudson.FilePath is missing
+Perhaps you forgot to surround the code with a step that provides this, such as: node
+	at org.jenkinsci.plugins.workflow.steps.StepDescriptor.checkContextAvailability(StepDescriptor.java:266)
+	at org.jenkinsci.plugins.workflow.cps.DSL.invokeStep(DSL.java:263)
+	at org.jenkinsci.plugins.workflow.cps.DSL.invokeMethod(DSL.java:179)
+	at org.jenkinsci.plugins.workflow.cps.CpsScript.invokeMethod(CpsScript.java:122)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1213)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1022)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.call(PogoMetaClassSite.java:42)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+	at org.kohsuke.groovy.sandbox.impl.Checker$1.call(Checker.java:160)
+	at org.kohsuke.groovy.sandbox.GroovyInterceptor.onMethodCall(GroovyInterceptor.java:23)
+	at org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SandboxInterceptor.onMethodCall(SandboxInterceptor.java:157)
+	at org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SandboxInterceptor.onMethodCall(SandboxInterceptor.java:142)
+	at org.kohsuke.groovy.sandbox.impl.Checker$1.call(Checker.java:158)
+	at org.kohsuke.groovy.sandbox.impl.Checker.checkedCall(Checker.java:162)
+	at com.cloudbees.groovy.cps.sandbox.SandboxInvoker.methodCall(SandboxInvoker.java:17)
+	at WorkflowScript.run(WorkflowScript:1)
+	at ___cps.transform___(Native Method)
+	at com.cloudbees.groovy.cps.impl.ContinuationGroup.methodCall(ContinuationGroup.java:84)
+	at com.cloudbees.groovy.cps.impl.FunctionCallBlock$ContinuationImpl.dispatchOrArg(FunctionCallBlock.java:113)
+	at com.cloudbees.groovy.cps.impl.FunctionCallBlock$ContinuationImpl.fixArg(FunctionCallBlock.java:83)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at com.cloudbees.groovy.cps.impl.ContinuationPtr$ContinuationImpl.receive(ContinuationPtr.java:72)
+	at com.cloudbees.groovy.cps.impl.CollectionLiteralBlock$ContinuationImpl.dispatch(CollectionLiteralBlock.java:55)
+	at com.cloudbees.groovy.cps.impl.CollectionLiteralBlock$ContinuationImpl.item(CollectionLiteralBlock.java:45)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at com.cloudbees.groovy.cps.impl.ContinuationPtr$ContinuationImpl.receive(ContinuationPtr.java:72)
+	at com.cloudbees.groovy.cps.impl.ConstantBlock.eval(ConstantBlock.java:21)
+	at com.cloudbees.groovy.cps.Next.step(Next.java:83)
+	at com.cloudbees.groovy.cps.Continuable$1.call(Continuable.java:174)
+	at com.cloudbees.groovy.cps.Continuable$1.call(Continuable.java:163)
+	at org.codehaus.groovy.runtime.GroovyCategorySupport$ThreadCategoryInfo.use(GroovyCategorySupport.java:129)
+	at org.codehaus.groovy.runtime.GroovyCategorySupport.use(GroovyCategorySupport.java:268)
+	at com.cloudbees.groovy.cps.Continuable.run0(Continuable.java:163)
+	at org.jenkinsci.plugins.workflow.cps.SandboxContinuable.access$001(SandboxContinuable.java:18)
+	at org.jenkinsci.plugins.workflow.cps.SandboxContinuable.run0(SandboxContinuable.java:51)
+	at org.jenkinsci.plugins.workflow.cps.CpsThread.runNextChunk(CpsThread.java:186)
+	at org.jenkinsci.plugins.workflow.cps.CpsThreadGroup.run(CpsThreadGroup.java:370)
+	at org.jenkinsci.plugins.workflow.cps.CpsThreadGroup.access$200(CpsThreadGroup.java:93)
+	at org.jenkinsci.plugins.workflow.cps.CpsThreadGroup$2.call(CpsThreadGroup.java:282)
+	at org.jenkinsci.plugins.workflow.cps.CpsThreadGroup$2.call(CpsThreadGroup.java:270)
+	at org.jenkinsci.plugins.workflow.cps.CpsVmExecutorService$2.call(CpsVmExecutorService.java:66)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at hudson.remoting.SingleLaneExecutorService$1.run(SingleLaneExecutorService.java:131)
+	at jenkins.util.ContextResettingExecutorService$1.run(ContextResettingExecutorService.java:28)
+	at jenkins.security.ImpersonatingExecutorService$1.run(ImpersonatingExecutorService.java:59)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Finished: FAILURE
+```
+
+Cambiando el script a 
+```
+node {
+   echo 'Hello World'
+}
+```
+	
+	
+Genera la salida
+```
+Started by user administrator
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/hello-world
+[Pipeline] {
+[Pipeline] echo
+Hello World
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+Cambiando el script a
+```
+echo 'Hello world'
+```
+
+Genera la salida
+```
+Started by user administrator
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] echo
+Hello world
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+#### 5- Creando un Pipeline Job con Git y Maven
+- Similar al paso anterior creamos un ítem con el nombre simple-maven
+- Elegir Git + Maven en la seccion try sample Pipeline
+- Guardar y ejecutar el Job
+- Analizar el script, para identificar los diferentes pasos definidos y correlacionarlos con lo que se ejecuta en el Job y se visualiza en la página del Job.
+
+El script generado es el siguiente
+
+```
+node {
+   def mvnHome
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/jglick/simple-maven-project-with-tests.git'
+      // Get the Maven tool.
+      // ** NOTE: This 'M3' Maven tool must be configured
+      // **       in the global configuration.           
+      mvnHome = tool 'M3'
+   }
+   stage('Build') {
+      // Run the maven build
+      withEnv(["MVN_HOME=$mvnHome"]) {
+         if (isUnix()) {
+            sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
+         } else {
+            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+         }
+      }
+   }
+   stage('Results') {
+      junit '**/target/surefire-reports/TEST-*.xml'
+      archiveArtifacts 'target/*.jar'
+   }
+}
+```
+Dicho código tiene 3 partes principales, las cuales se correlacionan con el "Stage View" o tablero del pipeline.
+La etapa de results se usa para exibir en la página del pipeline el artifact generado, que en este caso es la aplicación para poder ser descargada y ejecutada. 
+
+	![Alt text](CapturasTP6/simple-maven-build-dashboard-1.png)
+	
+#### 6- Utilizando nuestros proyectos
+- Utilizando lo aprendido en el ejercicio 5
+	- Crear un Job que construya el proyecto ./payroll/server del trabajo práctico 2.
+	- Obtener el código desde el repositorio de cada alumno (se puede crear un repositorio nuevo en github que contenga solamente el proyecto maven). 
+	
+Observaciones
+Para poder hacerlo, se debe generar un nuevo job (llamado "payroll-server-1"), de tipo pipeline y eligiendo Git + Maven en la seccion try sample Pipeline. Se modifica el script provisto a:
+
+```
+node {
+   def mvnHome
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'http://github.com/NNelo/IS3.git'
+      // Get the Maven tool.
+      // ** NOTE: This 'M3' Maven tool must be configured
+      // **       in the global configuration.           
+      mvnHome = tool 'M3'
+   }
+   stage('Build') {
+      // Run the maven build
+      withEnv(["MVN_HOME=$mvnHome"]) {
+             dir('payroll/server') {
+             if (isUnix()) {
+                sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
+             } else {
+                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+             }
+         }
+      }
+   }
+   stage('Results') {
+      //junit '**/target/surefire-reports/TEST-*.xml'
+      archiveArtifacts '**/target/*.jar'
+   }
+```
+
+En la instancia de Preparation, se coloca la url del repositorio de donde se quiere obtener el proyecto
+En la instaicia de Build, se especifica el comando " dir('payroll/server')". Esto se debe a que el jenkins tiene un workspace propio donde coloca todos los archivos que necesita para su funcionamiento. En este workspace es donde se descargó el repositorio de la etapa anterior y, por defecto, la raiz de jenkins está en el directorio de su workspace. Con el comando anterior, se posiciona a nivel de repositorio.
+En la instancia de Results, se indica que se debe buscar en las capetas padres (inclusive) por los .jar presentes.
+	
+- Generar y publicar los artefactos que se producen.
+- Como resultado de este ejercicio proveer el script en el archivo ./payroll/server/Jenkinsfile
+
+
+ 

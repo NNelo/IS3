@@ -1580,3 +1580,153 @@ Esto de abrir muchos puertos para hacer balanceo de cargas
 Tambien para tener diferentes versiones en distintos puertos (canary)
 	Usa a cierta gente (usuarios) en esa version de la aplicacion
 
+## Trabajo Práctico 5 - Imágenes de Docker
+
+#### 1- Conceptos de Dockerfiles
+-Leer https://docs.docker.com/engine/reference/builder/
+
+Glossary
+	dockerfile: A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.
+	docker build: command that builds an image from a Dockerfile and a context. 
+	build context: The build’s context is the set of files at a specified location PATH or URL
+	
+	docker image: Docker images are the basis of containers. An Image is an ordered collection of root filesystem changes and the corresponding execution parameters for use within a container runtime. An image typically contains a union of layered filesystems stacked on top of each other. An image does not have state and it never changes.
+	
+	container: A container is a runtime instance of a docker image. It consists of: A Docker image; An execution environment; A standard set of instructions.
+	
+-Describir las instrucciones
+	-FROM
+		A Dockerfile must start with a `FROM` instruction. The FROM instruction specifies the Base Image from which you are building. It initializes a new build stage and sets the Base Image for subsequent instructions.
+		Establece la imagen de la cual se parte, por ejemplo, hacer una imagen basada en Alpine. 
+		
+		Observación: el caso más común es obtener imagenes bases de los repositorios públicos. Sin embargo pueden utilizarse otras imágenes locales. Por ejemplo, tener una imagen para compilar y otra para producción
+			Contenedor para compilación
+				FROM carbon as builder
+			Contenedor para producción
+				FROM alpine:1.31
+				COPY FROM builder
+		Los beneficios radican en tener un entorno de compilación separado y controlado, como así más liviano
+		
+	-COPY
+		The COPY instruction copies new files or directories from <src> and adds them to the filesystem of the container at the path <dest>.
+		Sirve para tomar archivos y/o directorios para meterlos dentro del container, generan una nueva layer
+		Por ejemplo
+			La imagen
+				FROM openjdk:8-jre-alpine
+				COPY ./target/nombre.jar /app/
+				
+			Genera las siguientes capas
+				|*.jar
+				|jre 1.8
+				|..... (librerias, so updates, por ejemplo)
+				|Alpine
+			Es decir, se incluye una nueva capa con los archivos espeficiados en el COPY.
+	
+	-ADD
+		The ADD instruction copies new files, directories or remote file URLs from <src> and adds them to the filesystem of the image at the path <dest>.
+		Como COPY, ADD sirve para tomar archivos y directorios para meterlos dentro del contenedor, también genera una nueva layer. Sin embargo, la principal diferencia radica en que ADD permite que <src> sea una URL, es decir que permite la inclusiónb de archivos remotos. Otra diferencia se presenta con los archivos comprimidos, mientras COPY mete al contenedor un archivo comprimido, el resultado de ADD es un directorio con los archivos descomprimidos. Por ejemplo la instrucción "ADD textoprueba.tar.gz /zip/" genera una carpeta zip montada en root con la escrurtura del directorio descomprimida.
+		
+		Observación: esta instrucción puede utilizarse para construir un contenedor con el iso de cierto sistema operativo. Para ello se parte de un contenedor vacío y se añade (y descomprime) el iso.
+		Ejemplo: Como hacer un contenedor con Alpine desde 0 [teniendo el tar en ./os.tar (que es una copia de / de un alpine + limpieza)]
+			FROM scratch
+			ADD so.tar /
+
+	-RUN 
+		The RUN instruction will execute any commands in a new layer on top of the current image and commit the results. The resulting committed image will be used for the next step in the Dockerfile.
+		Layering RUN instructions and generating commits conforms to the core concepts of Docker where commits are cheap and containers can be created from any point in an image’s history, much like source control.
+		RUN sirve para ejecutar instrucciones durante la construcción de la imagen. Cada RUN genera una nueva layer con los resultados de las instrucciones. 	
+		Por ejemplo: instalar wget a partir del administrador de paquetes existente en el contenedor
+			FROM openjdk:8-jre-alpine
+			COPY ./target/nombre.jar /app/
+			RUN apk add wget
+			
+			El layer queda 
+					|/bin/wget
+					|*.jar
+					|jre 1.8
+					|...... (librerias, so updates, por ejemplo)
+					|Alpine
+		Otro ejemplo: se quiere buildear, a partir de una imagen, con los paquetes actualizados
+			FROM openjdk:8-jre-alpine
+			COPY ./target/nombre.jar /app/
+			RUN apk update
+			
+			
+	-CMD
+		The main purpose of a CMD is to provide defaults for an executing container. These defaults can include an executable. There can only be one CMD instruction in a Dockerfile. If you list more than one CMD then only the last CMD will take effect.
+		The CMD instruction sets the command to be executed when running the image.
+		Este comando especifica el comando a ejecutar cuando el contenedor es iniciado. 
+		Por ejemplo
+			FROM ubuntu
+			CMD echo "This is a test." | wc -
+			
+		También CMD puede usarse en conjunto con ENTRYPOINT, para especificarle argumentos (como se verá más adelante) 
+			CMD ["param1","param2"] (as default parameters to ENTRYPOINT)
+			
+	-ENTRYPOINT
+		An ENTRYPOINT allows you to configure a container that will run as an executable.
+		Command line arguments to docker run <image> will be appended after all elements in an exec form ENTRYPOINT This allows arguments to be passed to the entry point, i.e., docker run <image> -d will pass the -d argument to the entry point. You can override the ENTRYPOINT instruction using the docker run --entrypoint flag.
+		Este comando también especifica el comando a ejecutar cuando el contenedor es iniciado y, además, permite tomar los parámetros especificados en "docker run ..." y los anexa al final del comando de entrypoint. 
+		Una diferencia con CMD es que: CMD ante la presencia de argumentos en docker run deja sin efecto la instruccion de CMD, mientras que ENTRYPOINT añade los parámetros. 
+		Ejemplo
+			Dockerfile (t1)
+				FROM alpine:latest
+				CMD ls
+				
+			docker run t1
+				bin
+				dev
+				etc
+				home
+				lib
+				...
+			
+			docker run t1 -l
+				docker: Error response from daemon: OCI runtime create failed: container_linux.go:346: starting container process caused "exec: \"-l\": executable file not found in $PATH": unknown.
+				ERRO[0005] error waiting for container: context canceled 
+			
+			docker run t1 ls -l
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 bin
+				drwxr-xr-x    5 root     root           340 Oct 13 16:46 dev
+				drwxr-xr-x    1 root     root          4096 Oct 13 16:46 etc
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 home
+				drwxr-xr-x    5 root     root          4096 Aug 20 10:30 lib
+				...
+	
+			Dockerfile (t2)
+				FROM alpine:latest
+				ENTRYPOINT ["ls"]
+
+			docker run t2   (IDENTICO A t1)
+				bin
+				dev
+				etc
+				home
+				lib
+				...
+				
+			docker run t2 -l
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 bin
+				drwxr-xr-x    5 root     root           340 Oct 13 16:53 dev
+				drwxr-xr-x    1 root     root          4096 Oct 13 16:52 etc
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 home
+				drwxr-xr-x    5 root     root          4096 Aug 20 10:30 lib
+			
+			docker run t2 ls -l
+				ls: ls: No such file or directory
+		
+		Understand how CMD and ENTRYPOINT interact
+			1. Dockerfile should specify at least one of CMD or ENTRYPOINT commands.
+			2. ENTRYPOINT should be defined when using the container as an executable.
+			3. CMD should be used as a way of defining default arguments for an ENTRYPOINT command or for executing an ad-hoc command in a container.
+			4. CMD will be overridden when running the container with alternative arguments.	
+		
+	-EXPOSE
+		The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime. The EXPOSE instruction does not actually publish the port. It functions as a type of documentation between the person who builds the image and the person who runs the container, about which ports are intended to be published. 
+		Es un comando para agregar metadata sobre el container, informa qué puertos se exponen debido a la imagen, pero no hace un mapeo de puertos. 
+		Entonces quien esté por correr la imagen, con el comando "docker inspect <nro img>" podrá consultar la metadata y, por ende, ver qué puertos se exponen
+		
+	-ENV 
+		The ENV instruction sets the environment variable <key> to the value <value>. This value will be in the environment for all subsequent instructions in the build stage and can be replaced inline in many as well.
+
+

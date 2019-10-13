@@ -726,6 +726,130 @@ netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar$ java -c
 
 #### 9- Ejemplo con nodejs (Opcional, pero recomendando)
 
+-Instalar Nodejs: https://nodejs.org/en/
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo apt install nodejs
+netbook@netbook-pc:~/Guitar/IS3$ sudo apt install npm
+
+netbook@netbook-pc:~/Guitar/IS3$ nodejs -v
+v10.15.2
+netbook@netbook-pc:~/Guitar/IS3$ npm -v
+5.8.0	
+```
+
+-Instalar el componente para generar aplicaciones Express
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo npm install express-generator -g
+npm WARN npm npm does not support Node.js v10.15.2
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 4, 6, 7, 8, 9.
+npm WARN npm You can find the latest version at https://nodejs.org/
+/usr/local/bin/express -> /usr/local/lib/node_modules/express-generator/bin/express-cli.js
++ express-generator@4.16.1
+added 10 packages from 13 contributors in 6.515s
+```
+
+-Crear una nueva aplicación
+```
+netbook@netbook-pc:~/Guitar/IS3$ express --view=ejs hola-mundo
+   create : hola-mundo/
+   create : hola-mundo/public/
+   create : hola-mundo/public/javascripts/
+   create : hola-mundo/public/images/
+   create : hola-mundo/public/stylesheets/
+   create : hola-mundo/public/stylesheets/style.css
+   create : hola-mundo/routes/
+   create : hola-mundo/routes/index.js
+   create : hola-mundo/routes/users.js
+   create : hola-mundo/views/
+   create : hola-mundo/views/error.ejs
+   create : hola-mundo/views/index.ejs
+   create : hola-mundo/app.js
+   create : hola-mundo/package.json
+   create : hola-mundo/bin/
+   create : hola-mundo/bin/www
+
+   change directory:
+     $ cd hola-mundo
+
+   install dependencies:
+     $ npm install
+
+   run the app:
+     $ DEBUG=hola-mundo:* npm start
+
+```
+-Ejecutar la aplicación
+```
+netbook@netbook-pc:~/Guitar/IS3$ cd hola-mundo/
+
+netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ npm install 
+npm WARN npm npm does not support Node.js v10.15.2
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 4, 6, 7, 8, 9.
+npm WARN npm You can find the latest version at https://nodejs.org/
+npm WARN notice [SECURITY] finalhandler has the following vulnerability: 1 low. Go here for more details: https://www.npmjs.com/advisories?search=finalhandler&version=1.1.1 - Run `npm i npm@latest -g` to upgrade your npm version, and then `npm audit` to get more info.
+npm WARN tar write after end
+npm notice created a lockfile as package-lock.json. You should commit this file.
+added 53 packages from 36 contributors in 15.318s
+
+netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ npm start
+npm WARN npm npm does not support Node.js v10.15.2
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 4, 6, 7, 8, 9.
+npm WARN npm You can find the latest version at https://nodejs.org/
+
+> hola-mundo@0.0.0 start /home/netbook/Guitar/IS3/hola-mundo
+> node ./bin/www
+```
+
+-La aplicación web estará disponible en http://localhost:3000
+```
+netbook@netbook-pc:~/Guitar/IS3$ curl localhost:3000
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
+  </body>
+</html>
+```
+
+-Analizar el manejo de paquetes y dependencias realizado por npm.
+
+npm  is the package manager for the Node JavaScript platform.  It puts modules in place so that node can find them, and manages dependency conflicts intelligently.
+It is extremely configurable to support a wide variety of use cases.  Most commonly, it is used to publish, discover, install, and develop node programs.
+
+En definitiva, npm cumple las funciones que Maven hace para Java. Permite compilar, buildear y ejecutar las aplicaciones desarrolladas. En el caso de npm, las dependencias se declaran en un archivo package.json, que hace las veces del pom.xml. 
+
+```
+netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ cat package.json 
+{
+  "name": "hola-mundo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  }
+}
+```
+
+Incluso la instalación del proyecto (con npm install), genera la carpeta "node_modules" que contiene todos los módulos necesarios para que la apliación pueda ser ejecutada en dicho entorno.
 
 ## Trabajo Práctico 3 -
 

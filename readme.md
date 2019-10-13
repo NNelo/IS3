@@ -1729,4 +1729,91 @@ Glossary
 	-ENV 
 		The ENV instruction sets the environment variable <key> to the value <value>. This value will be in the environment for all subsequent instructions in the build stage and can be replaced inline in many as well.
 
+#### 2- Generar imagen de docker
+-Utilizar el código de la carpeta ./payroll/server
+-Compilar la salida con:
+ mvn clean package spring-boot:repackage 
+- Agregando el Dockerfile (en la carpeta Server)
+	```
+	FROM openjdk:8-jre-alpine
+	RUN apk add --no-cache bash
+	WORKDIR /opt
+	COPY target/*-SNAPSHOT.jar .
+	ENV JAVA_OPTS="-Xms32m -Xmx128m"
+	ENTRYPOINT exec java $JAVA_OPTS -jar evolution-0.0.1-SNAPSHOT.jar
+	EXPOSE 8080
+	```
+- Generar la imagen de Docker con el comando build 
+	```
+	netbook@netbook-pc:~/Guitar/IS3/payroll/server$ sudo docker build -t test-java-ev .
+	Sending build context to Docker daemon  39.75MB
+	Step 1/6 : FROM openjdk:8-jre-alpine
+ 	---> f7a292bbb70c
+	Step 2/6 : RUN apk add --no-cache bash
+ 	---> Using cache
+ 	---> 41eba661870a
+	Step 3/6 : WORKDIR /opt
+ 	---> Using cache
+ 	---> 9e6b76800a60
+	Step 4/6 : COPY target/*-SNAPSHOT.jar .
+ 	---> 56a375c3a7d4
+	Step 5/6 : ENV JAVA_OPTS="-Xms32m -Xmx128m"
+ 	---> Running in e133cfbf6113
+	Removing intermediate container e133cfbf6113
+ 	---> fb18d6de3cf9
+	Step 6/6 : ENTRYPOINT exec java $JAVA_OPTS -jar evolution-0.0.1-SNAPSHOT.jar
+ 	---> Running in 6474039fd279
+	Removing intermediate container 6474039fd279
+ 	---> c05566178db2
+	Successfully built c05566178db2
+	Successfully tagged test-java-ev:latest
+	```
 
+-Ejecutar el contenedor
+-Capturar y mostrar la salida.
+```
+sudo docker run -p 7777:8080 test-java-ev
+ 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.9.RELEASE)
+
+2019-10-13 19:40:35.409  INFO 1 --- [           main] payroll.PayrollApplication               : Starting PayrollApplication v0.0.1-SNAPSHOT on 99775113994b with PID 1 (/opt/evolution-0.0.1-SNAPSHOT.jar started by root in /opt)
+2019-10-13 19:40:35.466  INFO 1 --- [           main] payroll.PayrollApplication               : No active profile set, falling back to default profiles: default
+2019-10-13 19:40:48.451  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-13 19:40:49.216  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 658ms. Found 1 repository interfaces.
+2019-10-13 19:40:54.228  INFO 1 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6d7714c7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-13 19:40:54.608  INFO 1 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$ecf761f9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-13 19:40:57.740  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-10-13 19:40:58.219  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-10-13 19:40:58.223  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.26]
+2019-10-13 19:40:59.130  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-10-13 19:40:59.136  INFO 1 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 22765 ms
+2019-10-13 19:41:01.553  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-13 19:41:03.491  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-13 19:41:04.336  INFO 1 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+        name: default
+        ...]
+2019-10-13 19:41:05.222  INFO 1 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.12.Final}
+2019-10-13 19:41:05.262  INFO 1 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2019-10-13 19:41:07.079  INFO 1 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-10-13 19:41:09.428  INFO 1 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-10-13 19:41:15.618  INFO 1 --- [           main] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@57bc27f5'
+2019-10-13 19:41:15.647  INFO 1 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-10-13 19:41:21.543  INFO 1 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-13 19:41:22.251  WARN 1 --- [           main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-10-13 19:41:25.366  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-10-13 19:41:25.392  INFO 1 --- [           main] payroll.PayrollApplication               : Started PayrollApplication in 56.803 seconds (JVM running for 62.099)
+2019-10-13 19:41:27.100  INFO 1 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=1, firstName=Bilbo, lastName=Baggins, role=burglar)
+2019-10-13 19:41:27.125  INFO 1 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=2, firstName=Frodo, lastName=Baggins, role=thief)
+
+
+
+
+netbook@netbook-pc:~$ curl localhost:7777/employees/1
+{"id":1,"firstName":"Bilbo","lastName":"Baggins","role":"burglar","name":"Bilbo Baggins","_links":{"self":{"href":"http://localhost:7777/employees/1"},"employees":{"href":"http://localhost:7777/employees"}}}
+```

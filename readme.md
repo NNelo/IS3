@@ -726,6 +726,130 @@ netbook@netbook-pc:~/Desktop/trabajo-practico-02/maven/ejemplo-uber-jar$ java -c
 
 #### 9- Ejemplo con nodejs (Opcional, pero recomendando)
 
+-Instalar Nodejs: https://nodejs.org/en/
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo apt install nodejs
+netbook@netbook-pc:~/Guitar/IS3$ sudo apt install npm
+
+netbook@netbook-pc:~/Guitar/IS3$ nodejs -v
+v10.15.2
+netbook@netbook-pc:~/Guitar/IS3$ npm -v
+5.8.0	
+```
+
+-Instalar el componente para generar aplicaciones Express
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo npm install express-generator -g
+npm WARN npm npm does not support Node.js v10.15.2
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 4, 6, 7, 8, 9.
+npm WARN npm You can find the latest version at https://nodejs.org/
+/usr/local/bin/express -> /usr/local/lib/node_modules/express-generator/bin/express-cli.js
++ express-generator@4.16.1
+added 10 packages from 13 contributors in 6.515s
+```
+
+-Crear una nueva aplicación
+```
+netbook@netbook-pc:~/Guitar/IS3$ express --view=ejs hola-mundo
+   create : hola-mundo/
+   create : hola-mundo/public/
+   create : hola-mundo/public/javascripts/
+   create : hola-mundo/public/images/
+   create : hola-mundo/public/stylesheets/
+   create : hola-mundo/public/stylesheets/style.css
+   create : hola-mundo/routes/
+   create : hola-mundo/routes/index.js
+   create : hola-mundo/routes/users.js
+   create : hola-mundo/views/
+   create : hola-mundo/views/error.ejs
+   create : hola-mundo/views/index.ejs
+   create : hola-mundo/app.js
+   create : hola-mundo/package.json
+   create : hola-mundo/bin/
+   create : hola-mundo/bin/www
+
+   change directory:
+     $ cd hola-mundo
+
+   install dependencies:
+     $ npm install
+
+   run the app:
+     $ DEBUG=hola-mundo:* npm start
+
+```
+-Ejecutar la aplicación
+```
+netbook@netbook-pc:~/Guitar/IS3$ cd hola-mundo/
+
+netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ npm install 
+npm WARN npm npm does not support Node.js v10.15.2
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 4, 6, 7, 8, 9.
+npm WARN npm You can find the latest version at https://nodejs.org/
+npm WARN notice [SECURITY] finalhandler has the following vulnerability: 1 low. Go here for more details: https://www.npmjs.com/advisories?search=finalhandler&version=1.1.1 - Run `npm i npm@latest -g` to upgrade your npm version, and then `npm audit` to get more info.
+npm WARN tar write after end
+npm notice created a lockfile as package-lock.json. You should commit this file.
+added 53 packages from 36 contributors in 15.318s
+
+netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ npm start
+npm WARN npm npm does not support Node.js v10.15.2
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 4, 6, 7, 8, 9.
+npm WARN npm You can find the latest version at https://nodejs.org/
+
+> hola-mundo@0.0.0 start /home/netbook/Guitar/IS3/hola-mundo
+> node ./bin/www
+```
+
+-La aplicación web estará disponible en http://localhost:3000
+```
+netbook@netbook-pc:~/Guitar/IS3$ curl localhost:3000
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
+  </body>
+</html>
+```
+
+-Analizar el manejo de paquetes y dependencias realizado por npm.
+
+npm  is the package manager for the Node JavaScript platform.  It puts modules in place so that node can find them, and manages dependency conflicts intelligently.
+It is extremely configurable to support a wide variety of use cases.  Most commonly, it is used to publish, discover, install, and develop node programs.
+
+En definitiva, npm cumple las funciones que Maven hace para Java. Permite compilar, buildear y ejecutar las aplicaciones desarrolladas. En el caso de npm, las dependencias se declaran en un archivo package.json, que hace las veces del pom.xml. 
+
+```
+netbook@netbook-pc:~/Guitar/IS3/hola-mundo$ cat package.json 
+{
+  "name": "hola-mundo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  }
+}
+```
+
+Incluso la instalación del proyecto (con npm install), genera la carpeta "node_modules" que contiene todos los módulos necesarios para que la apliación pueda ser ejecutada en dicho entorno.
 
 
 ## Trabajo Práctico 3 - Software Distribuido - Servicios RESTful
@@ -1108,6 +1232,385 @@ Esta modificación del proyecto simplifica la creación de links. Ahora la inser
 
 A nivel respuesta de la API, no vemos diferencias en tanto a los links. La única diferencia es que ahora la clase Employee contempla nuevos datos y métodos (divide name en firstName y lastName)
 
+## Trabajo Práctico 3 - Software Distribuido - Servicios RESTful
+
+#### 1- Configurar el IDE para trabajar con Spring
+
+Usando Eclipse
+	Spring Tools 4 - for Spring Boot (aka Spring Tol Suite 4) 4.4.0.RELEASE
+	Lombok v1.18.8 "Envious Ferret" 
+
+#### 2- Configurar la aplicación
+
+- Importando nonrest como server en nuestro repositorio
+```
+netbook@netbook-pc:~/Guitar$ tree IS3/payroll
+IS3/payroll
+├── pom.xml
+└── server
+    ├── pom.xml
+    └── src
+        └── main
+            └── java
+                └── payroll
+                    ├── EmployeeController.java
+                    ├── Employee.java
+                    ├── EmployeeNotFoundAdvice.java
+                    ├── EmployeeNotFoundException.java
+                    ├── EmployeeRepository.java
+                    ├── LoadDatabase.java
+                    └── PayrollApplication.java
+
+5 directories, 9 files
+```
+
+- Compilando el proyecto
+
+```
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ mvn clean package spring-boot:repackage 
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< org.springframework.guides:nonrest >-----------------
+[INFO] Building nonrest 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ nonrest ---
+[INFO] Deleting /home/netbook/Guitar/IS3/payroll/server/target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ nonrest ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 7 source files to /home/netbook/Guitar/IS3/payroll/server/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ nonrest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ nonrest ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ nonrest ---
+[INFO] Building jar: /home/netbook/Guitar/IS3/payroll/server/target/nonrest-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.9.RELEASE:repackage (repackage) @ nonrest ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.9.RELEASE:repackage (default-cli) @ nonrest ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  53.777 s
+[INFO] Finished at: 2019-10-09T00:55:03-03:00
+[INFO] ------------------------------------------------------------------------
+```
+
+Observación
+Analizando el comando: mvn clean package spring-boot:repackage
+	clean: remove the target directory with all the build data before starting so that it is fresh.
+	package: If you take a look at the POM for your project you will notice the packaging element is set to jar. This is how Maven knows to produce a JAR file from the above command. Crea la carpeta target 
+	"spring-boot:repackage"
+		Spring Boot Maven Plugin: The Spring Boot Maven Plugin provides Spring Boot support in Maven, allowing you to package executable jar or war archives and run an application “in-place”.
+		Repackages existing JAR and WAR archives so that they can be executed from the command line using java -jar. 
+		
+		
+El resultado del comando anterior es lo siguiente
+```
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ tree
+.
+├── pom.xml
+├── src
+│   └── main
+│       └── java
+│           └── payroll
+│               ├── EmployeeController.java
+│               ├── Employee.java
+│               ├── EmployeeNotFoundAdvice.java
+│               ├── EmployeeNotFoundException.java
+│               ├── EmployeeRepository.java
+│               ├── LoadDatabase.java
+│               └── PayrollApplication.java
+└── target
+    ├── classes
+    │   └── payroll
+    │       ├── Employee.class
+    │       ├── EmployeeController.class
+    │       ├── EmployeeNotFoundAdvice.class
+    │       ├── EmployeeNotFoundException.class
+    │       ├── EmployeeRepository.class
+    │       ├── LoadDatabase.class
+    │       └── PayrollApplication.class
+    ├── generated-sources
+    │   └── annotations
+    ├── maven-archiver
+    │   └── pom.properties
+    ├── maven-status
+    │   └── maven-compiler-plugin
+    │       └── compile
+    │           └── default-compile
+    │               ├── createdFiles.lst
+    │               └── inputFiles.lst
+    ├── nonrest-0.0.1-SNAPSHOT.jar
+    └── nonrest-0.0.1-SNAPSHOT.jar.original
+
+14 directories, 20 files
+```
+
+- Ejecutando el proyecto
+```
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ mvn spring-boot:run
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/usr/share/maven/lib/guice.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< org.springframework.guides:nonrest >-----------------
+[INFO] Building nonrest 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:2.1.9.RELEASE:run (default-cli) > test-compile @ nonrest >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ nonrest ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ nonrest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/netbook/Guitar/IS3/payroll/server/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ nonrest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.1.9.RELEASE:run (default-cli) < test-compile @ nonrest <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.9.RELEASE:run (default-cli) @ nonrest ---
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.9.RELEASE)
+
+2019-10-09 00:58:32.045  INFO 5148 --- [           main] payroll.PayrollApplication               : Starting PayrollApplication on netbook-pc with PID 5148 (/home/netbook/Guitar/IS3/payroll/server/target/classes started by netbook in /home/netbook/Guitar/IS3/payroll/server)
+2019-10-09 00:58:32.089  INFO 5148 --- [           main] payroll.PayrollApplication               : No active profile set, falling back to default profiles: default
+2019-10-09 00:58:41.587  INFO 5148 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-09 00:58:42.352  INFO 5148 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 673ms. Found 1 repository interfaces.
+2019-10-09 00:58:47.215  INFO 5148 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eae454e3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-09 00:58:50.478  INFO 5148 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-10-09 00:58:50.922  INFO 5148 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-10-09 00:58:50.926  INFO 5148 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.26]
+2019-10-09 00:58:52.523  INFO 5148 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-10-09 00:58:52.525  INFO 5148 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 19451 ms
+2019-10-09 00:58:54.444  INFO 5148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-09 00:58:56.145  INFO 5148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-09 00:58:56.857  INFO 5148 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+        name: default
+        ...]
+2019-10-09 00:58:57.442  INFO 5148 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.12.Final}
+2019-10-09 00:58:57.452  INFO 5148 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2019-10-09 00:58:58.896  INFO 5148 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-10-09 00:59:00.293  INFO 5148 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-10-09 00:59:06.432  INFO 5148 --- [           main] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@58a61126'
+2019-10-09 00:59:06.475  INFO 5148 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-10-09 00:59:11.762  INFO 5148 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-09 00:59:12.294  WARN 5148 --- [           main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-10-09 00:59:15.013  INFO 5148 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-10-09 00:59:15.082  INFO 5148 --- [           main] payroll.PayrollApplication               : Started PayrollApplication in 48.496 seconds (JVM running for 92.112)
+2019-10-09 00:59:15.635  INFO 5148 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=1, name=Bilbo Baggins, role=burglar)
+2019-10-09 00:59:15.681  INFO 5148 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=2, name=Frodo Baggins, role=thief)
+```
+
+Observación
+```
+netbook@netbook-pc:~$ curl localhost:8080/employees
+[{"id":1,"name":"Bilbo Baggins","role":"burglar"},{"id":2,"name":"Frodo Baggins","role":"thief"}]
+```
+
+También se hizo la misma prueba utilizando Postman
+
+- Ejecutando el proyecto desde Eclipse
+	Run as > Spring Boot App
+
+#### 3- Analizar el proyecto
+
+- Agregar un empleado
+
+```
+	POST localhost:8080/employees
+	body
+		{
+			"name": "Samwise Gamgee",
+			"role": "gardener"
+		}
+	response
+		{
+    		"id": 3,
+    		"name": "Samwise Gamgee",
+    		"role": "gardener"
+		}
+```
+
+Usando Postman
+![Alt text](CapturasTP3/post_new_employee_1.png)
+
+- Borrar un empleado 
+
+```
+	DELETE localhost:8080/employees/3
+	
+```
+
+
+#### 4- Agregando el proyecto RESTful
+
+- Copiar el contenido de la carpeta rest a la carpeta ./payroll/server
+- Agregar los archivos a git y generar un nuevo commit.
+- Analizar nuevamente el proyecto payroll-server, siguiendo el tutorial.
+- Entender las diferencias entre nonrest y rest
+
+Conclusiones
+
+Para que una aplicación sea considerada RESTful no basta con tener peticiones por URL, usar los verbos GET/POST/DELETE ni tener funciones CRUD (esto sería RPC). El hecho de considerarse RESTful implica que las respuestas contengan "hypermedia" o URLs para que se pueda navegar la API, es decir que haya una forma de saber cómo interactuar con la plataforma.
+
+Es por eso, que al observar las diferencias con el proyecto anterior, notamos la presencia de una herramienta llamada Spring HATEOAS que colabora en la inclusión de las URLs en las respuestas para que la API sea más fácilmente consumible por los clientes. 
+
+Incluso, analizando las diferencias entre los proyectos más profundamente, vemos que los cambios más significativos se producen en el EmployeeController, que ahora al momento de procesar las solicutudes de HTTP considera la incorporación de las URL en las respuestas. 
+
+Veamos un ejemplo, para el caso del GET a employees
+	El método anterior
+	```
+		@GetMapping("/employees")
+		List<Employee> all() {
+			return repository.findAll();
+		}
+	```
+	
+	El nuevo método
+	```
+		@GetMapping("/employees")
+		Resources<Resource<Employee>> all() {
+			List<Resource<Employee>> employees = repository.findAll().stream()
+				.map(employee -> new Resource<>(employee,
+					linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
+					linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
+				.collect(Collectors.toList());
+			
+			return new Resources<>(employees,
+				linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
+		}
+	```
+	
+	La respuesta ante un GET localhost:8080/employees
+	```
+	{
+    	"_embedded": {
+        	"employeeList": [{
+            	"id": 1,
+            	"name": "Bilbo Baggins",
+            	"role": "burglar",
+            	"_links": {
+                	"self": {
+                    	"href": "http://localhost:8080/employees/1"
+                	},
+                	"employees": {
+                    	"href": "http://localhost:8080/employees"
+                	}
+            	}
+        	}, {
+            	"id": 2,
+            	"name": "Frodo Baggins",
+            	"role": "thief",
+            	"_links": {
+                	"self": {
+                    	"href": "http://localhost:8080/employees/2"
+                	},
+                	"employees": {
+                    	"href": "http://localhost:8080/employees"
+                	}
+            	}
+        	}, {
+            	"id": 3,
+            	"name": "Samwise Gamgee",
+            	"role": "gardener",
+            	"_links": {
+                	"self": {
+                    	"href": "http://localhost:8080/employees/3"
+                	},
+                	"employees": {
+                    	"href": "http://localhost:8080/employees"
+                	}
+            	}
+        	}]
+    	},
+    	"_links": {
+        	"self": {
+            	"href": "http://localhost:8080/employees"
+        	}
+    	}
+	}
+	```
+	
+	Vemos cómo la API nos indica también URLs para seguir interactuando como clientes. En este caso cada empleado contiene un atributo links que nos muestra cómo obtener la lista de todos los empleados (lo que acabamos de hacer) o bien cómo consumir únicamente dicho empleado (employees/X)
+	Además, a la hora de elaborar un cliente más complejo que consuma la api, podemos tomar como parámetros las respuestas de la api, para hacer un clinete dinámico y que no tenga URL harcodeadas.	
+	
+#### 5- Agregando el proyecto evolution
+
+- Copiar el contenido de la carpeta evolution a la carpeta ./payroll/server
+- Agregar los archivos a git y generar un nuevo commit.
+- Entender como funciona ResourceAssembler
+
+Conclusiones 
+
+Esta modificación del proyecto simplifica la creación de links. Ahora la insersión de los links se delega a una funcionalidad de Spring HATEOAS, llamada ResourceAssembler
+	```
+	@Component
+	class EmployeeResourceAssembler implements ResourceAssembler<Employee, Resource<Employee>> {
+	
+		@Override
+		public Resource<Employee> toResource(Employee employee) {
+	
+			return new Resource<>(employee,
+				linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
+				linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+		}
+	}
+	```
+	
+	Simplificando la incorporación de los links en los métodos del Controller a:
+	```
+		List<Resource<Employee>> employees = repository.findAll().stream()
+			.map(assembler::toResource)
+			.collect(Collectors.toList());
+		
+		return new Resources<>(employees, 
+			linkTo(methodOn(EmployeeController.class).all()).withSelfRel()); 
+	```
+	
+	En definitiva la linea ".map(assembler::toResource)" concentra las lineas del método ResourceAsembler
+	Esto permite simplificar el código, evitando hardcodear cada una de las respuestas, concentrando todo en una única clase responsable de hacerlo
+
+A nivel respuesta de la API, no vemos diferencias en tanto a los links. La única diferencia es que ahora la clase Employee contempla nuevos datos y métodos (divide name en firstName y lastName)
 
 ## Trabajo Práctico 4 - Introducción a Docker
 
@@ -1579,4 +2082,371 @@ Al consultar desde un navegador por "http://localhost:3000", sí funciona.
 Esto de abrir muchos puertos para hacer balanceo de cargas
 Tambien para tener diferentes versiones en distintos puertos (canary)
 	Usa a cierta gente (usuarios) en esa version de la aplicacion
+
+## Trabajo Práctico 5 - Imágenes de Docker
+
+#### 1- Conceptos de Dockerfiles
+-Leer https://docs.docker.com/engine/reference/builder/
+
+Glossary
+	dockerfile: A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.
+	docker build: command that builds an image from a Dockerfile and a context. 
+	build context: The build’s context is the set of files at a specified location PATH or URL
+	
+	docker image: Docker images are the basis of containers. An Image is an ordered collection of root filesystem changes and the corresponding execution parameters for use within a container runtime. An image typically contains a union of layered filesystems stacked on top of each other. An image does not have state and it never changes.
+	
+	container: A container is a runtime instance of a docker image. It consists of: A Docker image; An execution environment; A standard set of instructions.
+	
+-Describir las instrucciones
+	-FROM
+		A Dockerfile must start with a `FROM` instruction. The FROM instruction specifies the Base Image from which you are building. It initializes a new build stage and sets the Base Image for subsequent instructions.
+		Establece la imagen de la cual se parte, por ejemplo, hacer una imagen basada en Alpine. 
+		
+		Observación: el caso más común es obtener imagenes bases de los repositorios públicos. Sin embargo pueden utilizarse otras imágenes locales. Por ejemplo, tener una imagen para compilar y otra para producción
+			Contenedor para compilación
+				FROM carbon as builder
+			Contenedor para producción
+				FROM alpine:1.31
+				COPY FROM builder
+		Los beneficios radican en tener un entorno de compilación separado y controlado, como así más liviano
+		
+	-COPY
+		The COPY instruction copies new files or directories from <src> and adds them to the filesystem of the container at the path <dest>.
+		Sirve para tomar archivos y/o directorios para meterlos dentro del container, generan una nueva layer
+		Por ejemplo
+			La imagen
+				FROM openjdk:8-jre-alpine
+				COPY ./target/nombre.jar /app/
+				
+			Genera las siguientes capas
+				|*.jar
+				|jre 1.8
+				|..... (librerias, so updates, por ejemplo)
+				|Alpine
+			Es decir, se incluye una nueva capa con los archivos espeficiados en el COPY.
+	
+	-ADD
+		The ADD instruction copies new files, directories or remote file URLs from <src> and adds them to the filesystem of the image at the path <dest>.
+		Como COPY, ADD sirve para tomar archivos y directorios para meterlos dentro del contenedor, también genera una nueva layer. Sin embargo, la principal diferencia radica en que ADD permite que <src> sea una URL, es decir que permite la inclusiónb de archivos remotos. Otra diferencia se presenta con los archivos comprimidos, mientras COPY mete al contenedor un archivo comprimido, el resultado de ADD es un directorio con los archivos descomprimidos. Por ejemplo la instrucción "ADD textoprueba.tar.gz /zip/" genera una carpeta zip montada en root con la escrurtura del directorio descomprimida.
+		
+		Observación: esta instrucción puede utilizarse para construir un contenedor con el iso de cierto sistema operativo. Para ello se parte de un contenedor vacío y se añade (y descomprime) el iso.
+		Ejemplo: Como hacer un contenedor con Alpine desde 0 [teniendo el tar en ./os.tar (que es una copia de / de un alpine + limpieza)]
+			FROM scratch
+			ADD so.tar /
+
+	-RUN 
+		The RUN instruction will execute any commands in a new layer on top of the current image and commit the results. The resulting committed image will be used for the next step in the Dockerfile.
+		Layering RUN instructions and generating commits conforms to the core concepts of Docker where commits are cheap and containers can be created from any point in an image’s history, much like source control.
+		RUN sirve para ejecutar instrucciones durante la construcción de la imagen. Cada RUN genera una nueva layer con los resultados de las instrucciones. 	
+		Por ejemplo: instalar wget a partir del administrador de paquetes existente en el contenedor
+			FROM openjdk:8-jre-alpine
+			COPY ./target/nombre.jar /app/
+			RUN apk add wget
+			
+			El layer queda 
+					|/bin/wget
+					|*.jar
+					|jre 1.8
+					|...... (librerias, so updates, por ejemplo)
+					|Alpine
+		Otro ejemplo: se quiere buildear, a partir de una imagen, con los paquetes actualizados
+			FROM openjdk:8-jre-alpine
+			COPY ./target/nombre.jar /app/
+			RUN apk update
+			
+			
+	-CMD
+		The main purpose of a CMD is to provide defaults for an executing container. These defaults can include an executable. There can only be one CMD instruction in a Dockerfile. If you list more than one CMD then only the last CMD will take effect.
+		The CMD instruction sets the command to be executed when running the image.
+		Este comando especifica el comando a ejecutar cuando el contenedor es iniciado. 
+		Por ejemplo
+			FROM ubuntu
+			CMD echo "This is a test." | wc -
+			
+		También CMD puede usarse en conjunto con ENTRYPOINT, para especificarle argumentos (como se verá más adelante) 
+			CMD ["param1","param2"] (as default parameters to ENTRYPOINT)
+			
+	-ENTRYPOINT
+		An ENTRYPOINT allows you to configure a container that will run as an executable.
+		Command line arguments to docker run <image> will be appended after all elements in an exec form ENTRYPOINT This allows arguments to be passed to the entry point, i.e., docker run <image> -d will pass the -d argument to the entry point. You can override the ENTRYPOINT instruction using the docker run --entrypoint flag.
+		Este comando también especifica el comando a ejecutar cuando el contenedor es iniciado y, además, permite tomar los parámetros especificados en "docker run ..." y los anexa al final del comando de entrypoint. 
+		Una diferencia con CMD es que: CMD ante la presencia de argumentos en docker run deja sin efecto la instruccion de CMD, mientras que ENTRYPOINT añade los parámetros. 
+		Ejemplo
+			Dockerfile (t1)
+				FROM alpine:latest
+				CMD ls
+				
+			docker run t1
+				bin
+				dev
+				etc
+				home
+				lib
+				...
+			
+			docker run t1 -l
+				docker: Error response from daemon: OCI runtime create failed: container_linux.go:346: starting container process caused "exec: \"-l\": executable file not found in $PATH": unknown.
+				ERRO[0005] error waiting for container: context canceled 
+			
+			docker run t1 ls -l
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 bin
+				drwxr-xr-x    5 root     root           340 Oct 13 16:46 dev
+				drwxr-xr-x    1 root     root          4096 Oct 13 16:46 etc
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 home
+				drwxr-xr-x    5 root     root          4096 Aug 20 10:30 lib
+				...
+	
+			Dockerfile (t2)
+				FROM alpine:latest
+				ENTRYPOINT ["ls"]
+
+			docker run t2   (IDENTICO A t1)
+				bin
+				dev
+				etc
+				home
+				lib
+				...
+				
+			docker run t2 -l
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 bin
+				drwxr-xr-x    5 root     root           340 Oct 13 16:53 dev
+				drwxr-xr-x    1 root     root          4096 Oct 13 16:52 etc
+				drwxr-xr-x    2 root     root          4096 Aug 20 10:30 home
+				drwxr-xr-x    5 root     root          4096 Aug 20 10:30 lib
+			
+			docker run t2 ls -l
+				ls: ls: No such file or directory
+		
+		Understand how CMD and ENTRYPOINT interact
+			1. Dockerfile should specify at least one of CMD or ENTRYPOINT commands.
+			2. ENTRYPOINT should be defined when using the container as an executable.
+			3. CMD should be used as a way of defining default arguments for an ENTRYPOINT command or for executing an ad-hoc command in a container.
+			4. CMD will be overridden when running the container with alternative arguments.	
+		
+	-EXPOSE
+		The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime. The EXPOSE instruction does not actually publish the port. It functions as a type of documentation between the person who builds the image and the person who runs the container, about which ports are intended to be published. 
+		Es un comando para agregar metadata sobre el container, informa qué puertos se exponen debido a la imagen, pero no hace un mapeo de puertos. 
+		Entonces quien esté por correr la imagen, con el comando "docker inspect <nro img>" podrá consultar la metadata y, por ende, ver qué puertos se exponen
+		
+	-ENV 
+		The ENV instruction sets the environment variable <key> to the value <value>. This value will be in the environment for all subsequent instructions in the build stage and can be replaced inline in many as well.
+
+#### 2- Generar imagen de docker
+-Utilizar el código de la carpeta ./payroll/server
+-Compilar la salida con:
+ mvn clean package spring-boot:repackage 
+- Agregando el Dockerfile (en la carpeta Server)
+	```
+	FROM openjdk:8-jre-alpine
+	RUN apk add --no-cache bash
+	WORKDIR /opt
+	COPY target/*-SNAPSHOT.jar .
+	ENV JAVA_OPTS="-Xms32m -Xmx128m"
+	ENTRYPOINT exec java $JAVA_OPTS -jar evolution-0.0.1-SNAPSHOT.jar
+	EXPOSE 8080
+	```
+- Generar la imagen de Docker con el comando build 
+	```
+	netbook@netbook-pc:~/Guitar/IS3/payroll/server$ sudo docker build -t test-java-ev .
+	Sending build context to Docker daemon  39.75MB
+	Step 1/6 : FROM openjdk:8-jre-alpine
+ 	---> f7a292bbb70c
+	Step 2/6 : RUN apk add --no-cache bash
+ 	---> Using cache
+ 	---> 41eba661870a
+	Step 3/6 : WORKDIR /opt
+ 	---> Using cache
+ 	---> 9e6b76800a60
+	Step 4/6 : COPY target/*-SNAPSHOT.jar .
+ 	---> 56a375c3a7d4
+	Step 5/6 : ENV JAVA_OPTS="-Xms32m -Xmx128m"
+ 	---> Running in e133cfbf6113
+	Removing intermediate container e133cfbf6113
+ 	---> fb18d6de3cf9
+	Step 6/6 : ENTRYPOINT exec java $JAVA_OPTS -jar evolution-0.0.1-SNAPSHOT.jar
+ 	---> Running in 6474039fd279
+	Removing intermediate container 6474039fd279
+ 	---> c05566178db2
+	Successfully built c05566178db2
+	Successfully tagged test-java-ev:latest
+	```
+
+-Ejecutar el contenedor
+-Capturar y mostrar la salida.
+```
+sudo docker run -p 7777:8080 test-java-ev
+ 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.9.RELEASE)
+
+2019-10-13 19:40:35.409  INFO 1 --- [           main] payroll.PayrollApplication               : Starting PayrollApplication v0.0.1-SNAPSHOT on 99775113994b with PID 1 (/opt/evolution-0.0.1-SNAPSHOT.jar started by root in /opt)
+2019-10-13 19:40:35.466  INFO 1 --- [           main] payroll.PayrollApplication               : No active profile set, falling back to default profiles: default
+2019-10-13 19:40:48.451  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-13 19:40:49.216  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 658ms. Found 1 repository interfaces.
+2019-10-13 19:40:54.228  INFO 1 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6d7714c7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-13 19:40:54.608  INFO 1 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$ecf761f9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-13 19:40:57.740  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-10-13 19:40:58.219  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-10-13 19:40:58.223  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.26]
+2019-10-13 19:40:59.130  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-10-13 19:40:59.136  INFO 1 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 22765 ms
+2019-10-13 19:41:01.553  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-13 19:41:03.491  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-13 19:41:04.336  INFO 1 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+        name: default
+        ...]
+2019-10-13 19:41:05.222  INFO 1 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.12.Final}
+2019-10-13 19:41:05.262  INFO 1 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2019-10-13 19:41:07.079  INFO 1 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2019-10-13 19:41:09.428  INFO 1 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2019-10-13 19:41:15.618  INFO 1 --- [           main] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@57bc27f5'
+2019-10-13 19:41:15.647  INFO 1 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-10-13 19:41:21.543  INFO 1 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-13 19:41:22.251  WARN 1 --- [           main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-10-13 19:41:25.366  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-10-13 19:41:25.392  INFO 1 --- [           main] payroll.PayrollApplication               : Started PayrollApplication in 56.803 seconds (JVM running for 62.099)
+2019-10-13 19:41:27.100  INFO 1 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=1, firstName=Bilbo, lastName=Baggins, role=burglar)
+2019-10-13 19:41:27.125  INFO 1 --- [           main] payroll.LoadDatabase                     : Preloading Employee(id=2, firstName=Frodo, lastName=Baggins, role=thief)
+
+
+
+
+netbook@netbook-pc:~$ curl localhost:7777/employees/1
+{"id":1,"firstName":"Bilbo","lastName":"Baggins","role":"burglar","name":"Bilbo Baggins","_links":{"self":{"href":"http://localhost:7777/employees/1"},"employees":{"href":"http://localhost:7777/employees"}}}
+```
+#### 3- Imagen para aplicación web en Nodejs
+-Crear una carpeta trabajo-practico-05/nodejs-docker
+	Se utiliza la misma carpeta que para TP2, llamada, hola-mundo
+	Se agrega .dockerignore para no enviar datos innecesarios del contexto al daemon
+		```
+		#ignorando todo
+		**
+		#permitiendo algunos directorios
+		!package.json
+		```
+-Generar un proyecto siguiendo los pasos descriptos en el trabajo práctico 2 para Nodejs
+-Escribir un Dockerfile para ejecutar la aplicación web localizada en ese directorio
+	-Usar como imagen base node:8.11-alpine
+	-Ejecutar npm install dentro durante el build.
+	-Exponer el puerto 3000
+	
+	dockerfile
+	```
+		FROM node:8.11-alpine
+		WORKDIR /usr/hello-world/
+		COPY package.json ./
+		RUN npm install
+		COPY . .
+		CMD npm start
+		EXPOSE 3000
+	```
+-Hacer un build de la imagen, nombrar la imagen test-node.
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo docker build --no-cache -t test-node hola-mundo/
+Sending build context to Docker daemon  32.26kB
+Step 1/7 : FROM node:8.11-alpine
+ ---> 8adf3c3eb26c
+Step 2/7 : WORKDIR /usr/hello-world/
+ ---> Running in 11f36353993c
+Removing intermediate container 11f36353993c
+ ---> 3bd3302add4d
+Step 3/7 : COPY package.json ./
+ ---> 0c247c14db4f
+Step 4/7 : RUN npm install
+ ---> Running in 13aaeb23961f
+npm WARN notice [SECURITY] finalhandler has the following vulnerability: 1 low. Go here for more details: https://www.npmjs.com/advisories?search=finalhandler&version=1.1.1 - Run `npm i npm@latest -g` to upgrade your npm version, and then `npm audit` to get more info.                                
+npm notice created a lockfile as package-lock.json. You should commit this file.                    
+added 53 packages in 18.856s                                                                        
+Removing intermediate container 13aaeb23961f
+ ---> 42765e92cbb5
+Step 5/7 : COPY . .
+ ---> a755c7d6e884
+Step 6/7 : CMD npm start
+ ---> Running in 73261394da05
+Removing intermediate container 73261394da05
+ ---> 0931da6f3175
+Step 7/7 : EXPOSE 3000
+ ---> Running in 6c58be506008
+Removing intermediate container 6c58be506008
+ ---> 923f5381e48a
+Successfully built 923f5381e48a
+Successfully tagged test-node:latest
+```
+
+-Ejecutar la imagen test-node publicando el puerto 3000.
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo docker run -p 3333:3000 -it test-node
+
+> hola-mundo@0.0.0 start /usr/hello-world
+> node ./bin/www
+```
+
+-Verificar en http://localhost:3000 que la aplicación está funcionando.
+```
+netbook@netbook-pc:~$ curl localhost:3333
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
+  </body>
+</html>
+
+```
+-Proveer el Dockerfile y los comandos ejecutados como resultado de este ejercicio.
+
+#### 4- Publicar la imagen en Docker Hub.
+-Crear una cuenta en Docker Hub si no se dispone de una.
+	username: nnelo
+	
+-Registrase localmente a la cuenta de Docker Hub:
+
+Observación: cómo evitar contraseñas sin encriptar
+
+Se utiliza un "credential helper": docker-credential-pass (https://github.com/docker/docker-credential-helpers) 
+Pasos (https://github.com/docker/docker-credential-helpers/issues/102 nathanfiscus)
+	Colocar el ejecutable dentro de algún $PATH (/usr/local/sbin/docker-credential-pass)
+	Agregar en ".docker/config.json" la linea: "credsStore": "pass"
+
+	```
+	gpg2 --gen-key 
+		(usar nnelo, no NNelo)
+	sudo pass init nnelo
+	sudo docker login
+		Authenticating with existing credentials...
+		Login Succeeded
+	```
+
+-Crear un tag de la imagen generada en el ejercicio 3.
+```
+	sudo docker tag test-node nnelo/test-node:latest
+```
+
+-Subir la imagen a Docker Hub 
+```
+sudo docker push nnelo/test-node:latest
+		The push refers to repository [docker.io/nnelo/test-node]
+		d310c34431ff: Pushed 
+		16a64454de5f: Pushed 
+		788b2b635be3: Pushed 
+		8ed3c5a27ec0: Pushed 
+		edc64f78c2d2: Pushed 
+		d35df9c923f8: Mounted from library/node 
+		a7d484df787a: Mounted from library/node 
+		8dfad2055603: Mounted from library/node 
+		latest: digest: sha256:d91c72568979f13eaa10b3f605cac643d424981d3173171dd1ffbc80a10466fe size: 1991
+```
+
+![Alt text](CapturasTP5/test-node-en-dockerhub.png)
+
 

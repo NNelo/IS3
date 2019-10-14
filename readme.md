@@ -1941,3 +1941,133 @@ sudo docker run -p 7777:8080 test-java-ev
 netbook@netbook-pc:~$ curl localhost:7777/employees/1
 {"id":1,"firstName":"Bilbo","lastName":"Baggins","role":"burglar","name":"Bilbo Baggins","_links":{"self":{"href":"http://localhost:7777/employees/1"},"employees":{"href":"http://localhost:7777/employees"}}}
 ```
+#### 3- Imagen para aplicación web en Nodejs
+-Crear una carpeta trabajo-practico-05/nodejs-docker
+	Se utiliza la misma carpeta que para TP2, llamada, hola-mundo
+	Se agrega .dockerignore para no enviar datos innecesarios del contexto al daemon
+		```
+		#ignorando todo
+		**
+		#permitiendo algunos directorios
+		!package.json
+		```
+-Generar un proyecto siguiendo los pasos descriptos en el trabajo práctico 2 para Nodejs
+-Escribir un Dockerfile para ejecutar la aplicación web localizada en ese directorio
+	-Usar como imagen base node:8.11-alpine
+	-Ejecutar npm install dentro durante el build.
+	-Exponer el puerto 3000
+	
+	dockerfile
+	```
+		FROM node:8.11-alpine
+		WORKDIR /usr/hello-world/
+		COPY package.json ./
+		RUN npm install
+		COPY . .
+		CMD npm start
+		EXPOSE 3000
+	```
+-Hacer un build de la imagen, nombrar la imagen test-node.
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo docker build --no-cache -t test-node hola-mundo/
+Sending build context to Docker daemon  32.26kB
+Step 1/7 : FROM node:8.11-alpine
+ ---> 8adf3c3eb26c
+Step 2/7 : WORKDIR /usr/hello-world/
+ ---> Running in 11f36353993c
+Removing intermediate container 11f36353993c
+ ---> 3bd3302add4d
+Step 3/7 : COPY package.json ./
+ ---> 0c247c14db4f
+Step 4/7 : RUN npm install
+ ---> Running in 13aaeb23961f
+npm WARN notice [SECURITY] finalhandler has the following vulnerability: 1 low. Go here for more details: https://www.npmjs.com/advisories?search=finalhandler&version=1.1.1 - Run `npm i npm@latest -g` to upgrade your npm version, and then `npm audit` to get more info.                                
+npm notice created a lockfile as package-lock.json. You should commit this file.                    
+added 53 packages in 18.856s                                                                        
+Removing intermediate container 13aaeb23961f
+ ---> 42765e92cbb5
+Step 5/7 : COPY . .
+ ---> a755c7d6e884
+Step 6/7 : CMD npm start
+ ---> Running in 73261394da05
+Removing intermediate container 73261394da05
+ ---> 0931da6f3175
+Step 7/7 : EXPOSE 3000
+ ---> Running in 6c58be506008
+Removing intermediate container 6c58be506008
+ ---> 923f5381e48a
+Successfully built 923f5381e48a
+Successfully tagged test-node:latest
+```
+
+-Ejecutar la imagen test-node publicando el puerto 3000.
+```
+netbook@netbook-pc:~/Guitar/IS3$ sudo docker run -p 3333:3000 -it test-node
+
+> hola-mundo@0.0.0 start /usr/hello-world
+> node ./bin/www
+```
+
+-Verificar en http://localhost:3000 que la aplicación está funcionando.
+```
+netbook@netbook-pc:~$ curl localhost:3333
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
+  </body>
+</html>
+
+```
+-Proveer el Dockerfile y los comandos ejecutados como resultado de este ejercicio.
+
+#### 4- Publicar la imagen en Docker Hub.
+-Crear una cuenta en Docker Hub si no se dispone de una.
+	username: nnelo
+	
+-Registrase localmente a la cuenta de Docker Hub:
+
+Observación: cómo evitar contraseñas sin encriptar
+
+Se utiliza un "credential helper": docker-credential-pass (https://github.com/docker/docker-credential-helpers) 
+Pasos (https://github.com/docker/docker-credential-helpers/issues/102 nathanfiscus)
+	Colocar el ejecutable dentro de algún $PATH (/usr/local/sbin/docker-credential-pass)
+	Agregar en ".docker/config.json" la linea: "credsStore": "pass"
+
+	```
+	gpg2 --gen-key 
+		(usar nnelo, no NNelo)
+	sudo pass init nnelo
+	sudo docker login
+		Authenticating with existing credentials...
+		Login Succeeded
+	```
+
+-Crear un tag de la imagen generada en el ejercicio 3.
+```
+	sudo docker tag test-node nnelo/test-node:latest
+```
+
+-Subir la imagen a Docker Hub 
+```
+sudo docker push nnelo/test-node:latest
+		The push refers to repository [docker.io/nnelo/test-node]
+		d310c34431ff: Pushed 
+		16a64454de5f: Pushed 
+		788b2b635be3: Pushed 
+		8ed3c5a27ec0: Pushed 
+		edc64f78c2d2: Pushed 
+		d35df9c923f8: Mounted from library/node 
+		a7d484df787a: Mounted from library/node 
+		8dfad2055603: Mounted from library/node 
+		latest: digest: sha256:d91c72568979f13eaa10b3f605cac643d424981d3173171dd1ffbc80a10466fe size: 1991
+```
+
+![Alt text](CapturasTP5/test-node-en-dockerhub.png)
+
+

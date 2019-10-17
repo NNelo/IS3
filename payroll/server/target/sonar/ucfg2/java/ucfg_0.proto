@@ -1,0 +1,30 @@
+
+kpayroll.LoadDatabase#initDatabase(Lpayroll/EmployeeRepository;)Lorg/springframework/boot/CommandLineRunner;Y
+O/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/LoadDatabase.java ("paramAnnotations*ã
+paramAnnotationsY
+O/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/LoadDatabase.java (>Í
+Ê
+Y
+O/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/LoadDatabase.java (
+%0"
+__annotate*/-
++org.springframework.context.annotation.Bean**
+(
+
+repositorypayroll.EmployeeRepositoryž
+›
+Y
+O/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/LoadDatabase.java3 (=(
+
+repositorypayroll.EmployeeRepository"__annotation*
+
+%0*
+1*Ã
+1Y
+O/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/LoadDatabase.java	 ("c
+Y
+O/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/LoadDatabase.java (
+"":(
+
+repositorypayroll.EmployeeRepositoryB
+payroll.LoadDatabase

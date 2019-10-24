@@ -2838,3 +2838,214 @@ Por otro lado, la clase "PayrollApplication.java" presenta un inconveniente de s
 #### 9- Incluir el analisis en el Pipeline
 Agregar el paso de análisis automático de código en Jenkins u otra herramienta de CI/CD para el proyecto ./payroll/server
 ???
+
+## Trabajo Práctico 9 - Pruebas de unidad
+
+#### 2- Configurar Proyecto para correr unit tests
+- Configurar el proyecto payroll/server agregando esta dependencia al server/pom.xml
+```
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+		    <scope>test</scope>
+		    <version>2.1.6.RELEASE</version>
+		</dependency>
+```
+
+- Crear una clase llamada EmployeeTests.java en la carpeta src/test/java con el contenido
+```
+package payroll;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+public class EmployeeTest {
+
+    @Test
+    public void TestBasic() {
+    	Employee alex = new Employee("alex", "test", "test");
+    	assertEquals(alex.getName(), "alex test");
+    }
+}
+```
+
+- Ejecutar los tests utilizando la IDE
+
+#### 3- Familiarizarse con algunos conceptos de Mockito
+
+Mockito es un framework de simulación popular que se puede usar junto con JUnit. Mockito permite crear y configurar objetos falsos. El uso de Mockito simplifica significativamente el desarrollo de pruebas para clases con dependencias externas.
+
+Si se usa Mockito en las pruebas, normalmente:
+
+1.Se burlan las dependencias externas e insertan los mocs en el código bajo prueba
+2.Se ejecuta el código bajo prueba
+3.Se valida que el código se ejecutó correctamente
+
+#### 4- Creando un Mock para el repositorio
+
+- Crear la siguiente clase en src/test/java
+
+```
+package payroll;
+
+import java.io.IOException;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = PayrollApplication.class)
+@WebAppConfiguration
+public abstract class AbstractTest {
+	protected MockMvc mvc;
+	
+	//@MockBean protected EmployeeRepository repository;
+	
+	@Autowired
+	WebApplicationContext webApplicationContext;
+
+	protected void setUp() {
+		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	}
+}
+```
+
+- Agregar esta otra clase también en el mismo directorio
+```
+package payroll;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+
+public class EmployeeControllerTests extends AbstractTest {
+	
+   @Override
+   @Before
+   public void setUp() {
+      super.setUp();
+   }
+
+	@Test
+	public void getEmployees_Test_1() throws Exception {
+		String uri = "/employees";
+	    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+	         .accept(MediaTypes.HAL_JSON_VALUE)).andReturn();
+	      
+	    String content = mvcResult.getResponse().getContentAsString();
+	    int status = mvcResult.getResponse().getStatus();
+	    assertEquals(200, status);
+	}
+	
+	@Test
+	public void getEmployees_Test_2() throws Exception {
+		
+		mvc.perform(get("/employees").accept(MediaTypes.HAL_JSON_VALUE))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$._embedded.employeeList[0].id", is(1)))
+		.andExpect(jsonPath("$._embedded.employeeList[0].firstName", is("Bilbo")))
+		.andExpect(jsonPath("$._embedded.employeeList[0].lastName", is("Baggins")))
+		.andExpect(jsonPath("$._embedded.employeeList[0].role", is("ring bearer")))
+		//.andExpect(jsonPath("$._embedded.employeeList[0]._links.self.href", is("http://localhost/employees/1")))
+		.andExpect(jsonPath("$._embedded.employeeList[0]._links.employees.href", is("http://localhost/employees")))
+		.andExpect(jsonPath("$._embedded.employeeList[1].id", is(2)))
+		.andExpect(jsonPath("$._embedded.employeeList[1].firstName", is("Fodo")))
+		.andExpect(jsonPath("$._embedded.employeeList[1].lastName", is("Baggins")))
+		.andExpect(jsonPath("$._embedded.employeeList[1].role", is("burglar")))
+		//.andExpect(jsonPath("$._embedded.employeeList[1]._links.self.href", is("http://localhost/employees/2")))
+		.andExpect(jsonPath("$._embedded.employeeList[1]._links.employees.href", is("http://localhost/employees")))
+		.andExpect(jsonPath("$._links.self.href", is("http://localhost/employees"))) //
+		.andReturn();
+	}
+	
+	@Test
+	public void getEmployees_Test_3() throws Exception {
+
+//		given(repository.findAll()).willReturn( //
+//		Arrays.asList( //
+//				new Employee("Frodo1", "Baggins", "ring bearer"), //
+//				new Employee("Bilbo1", "Baggins", "burglar")));
+		
+		mvc.perform(get("/employees").accept(MediaTypes.HAL_JSON_VALUE))
+		.andDo(print())
+		.andExpect(status().isOk())
+		//.andExpect(jsonPath("$._embedded.employeeList[0].id", is(1)))
+		.andExpect(jsonPath("$._embedded.employeeList[0].firstName", is("Frodo1")))
+		.andExpect(jsonPath("$._embedded.employeeList[0].lastName", is("Baggins")))
+		.andExpect(jsonPath("$._embedded.employeeList[0].role", is("ring bearer")))
+		//.andExpect(jsonPath("$._embedded.employeeList[0]._links.self.href", is("http://localhost/employees/1")))
+		.andExpect(jsonPath("$._embedded.employeeList[0]._links.employees.href", is("http://localhost/employees")))
+		//.andExpect(jsonPath("$._embedded.employeeList[1].id", is(2)))
+		.andExpect(jsonPath("$._embedded.employeeList[1].firstName", is("Bilbo1")))
+		.andExpect(jsonPath("$._embedded.employeeList[1].lastName", is("Baggins")))
+		.andExpect(jsonPath("$._embedded.employeeList[1].role", is("burglar")))
+		//.andExpect(jsonPath("$._embedded.employeeList[1]._links.self.href", is("http://localhost/employees/2")))
+		.andExpect(jsonPath("$._embedded.employeeList[1]._links.employees.href", is("http://localhost/employees")))
+		.andExpect(jsonPath("$._links.self.href", is("http://localhost/employees"))) //
+		.andReturn();
+	}
+}
+```
+- Analizar estos tests con el jefe de trabajos prácticos
+
+Resultado de "mvn package" 
+```
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   EmployeeControllerTests.getEmployees_Test_2:48 JSON path "$._embedded.employeeList[0].role"                                                                                                   
+Expected: is "ring bearer"                                                                          
+     but: was "burglar"                                                                             
+[ERROR]   EmployeeControllerTests.getEmployees_Test_3:73 JSON path "$._embedded.employeeList[0].firstName"                                                                                              
+Expected: is "Frodo1"                                                                               
+     but: was "Bilbo"                                                                               
+[INFO] 
+[ERROR] Tests run: 4, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:50 min
+[INFO] Finished at: 2019-10-24T12:25:04-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (default-test) on project evolution: There are test failures.
+[ERROR] 
+[ERROR] Please refer to /home/netbook/Guitar/IS3/payroll/server/target/surefire-reports for the individual test results.                                                                                
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+```
+
+Principalmente, el error del test número 3 se debe a que se espera un resultado distinto al que se contiene en la base de datos real, que está involucrada en la prueba de unidad. En definitiva, la prueba getEmployees_Test_2 tiene valores pertenecientes a la base de datos real, por lo que debería ser correcto. Mientras que, la prueba getEmployees_Test_3 tiene valores diferentes al de la base de datos, por lo que a continuación se utilizará un Mock que simula dicha base de datos para las pruebas.
+
+- Hacer los ajustes necesarios (remover comentarios) y verificar que esta utilizando el repositorio falso
+
+- Utilizar el repositorio falso en todos los test cases dado que estamos escribiendo unitests
+	En esta instancia ambos test deberían pasar, puesto a que el test 2 espera los datos reales presentes en la base de datos y el test 3 espera valores (distintos a la base de datos) presentes en el repository mockeado
+
+#### 5- Agregar otros unit tests
+
+- Agregar al menos un unit test para otro endpoint, por ejemplo employees/{id} u Orders.
+
+#### 6- Capturar los unit tests como parte del proceso de CI/CD
+
+- Hacer los cambios en Jenkins (on en la herramienta de CICD utilizada) y en el pom.xml si es necesario, para capturar los resultados y mostraslos en la ejecución del build

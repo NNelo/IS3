@@ -2237,7 +2237,7 @@ Glossary
 -Utilizar el código de la carpeta ./payroll/server
 -Compilar la salida con:
  mvn clean package spring-boot:repackage 
-- Agregando el Dockerfile (en la carpeta Server)
+-Agregando el Dockerfile (en la carpeta Server)
 	```
 	FROM openjdk:8-jre-alpine
 	RUN apk add --no-cache bash
@@ -2449,7 +2449,6 @@ sudo docker push nnelo/test-node:latest
 ```
 
 ![Alt text](CapturasTP5/test-node-en-dockerhub.png)
-
 
 
 ## Trabajo Práctico 6 - Primeros pasos con Jenkins
@@ -2742,3 +2741,100 @@ En la instancia de Results, se indica que se debe buscar en las capetas padres (
 
 FALLA DOCKER PUSH
 
+## Trabajo Práctico 8 - Métricas de código
+
+#### 1- Configurando SonarCloud
+- Crear una cuenta en SonarCloud, se puede utilizar el usuario de GitHub.
+	NNelo de GitHub
+- Hacer un fork del repositorio https://github.com/alexisfr/java-projects
+- Clonar el repositorio al que se le hizo el fork.
+	https://github.com/NNelo/java-projects.git
+- En SonarCloud crear un nuevo proyecto (haciendo click en el botón +)
+- Elegir la opción de analizar nuevo projecto.
+- Completar las opciones para crear una nueva Organizacion (se puede usar su cuenta de github).
+- Seleccionar el repositorio java-projects de su usuario y presionar Set up
+
+#### 2- Correr Análisis de código
+- Una vez creado el proyecto, se debe elegir la opción de analisis manual
+- Seleccionar Maven.
+- Correr el comando generado en la raíz del repositorio clonado locamente, hay que agregar la opción -Dmaven.test.failure.ignore=true al final del comando: 
+
+```
+mvn verify sonar:sonar \
+  -Dsonar.projectKey=NNelo_java-projects \
+  -Dsonar.organization=nnelo \
+  -Dsonar.host.url=https://sonarcloud.io \
+  -Dsonar.login=c3b5f827a56633947332b548e724a4384d4c26bb \
+  -Dmaven.test.failure.ignore=true
+```
+Observación: 
+El comando anterior arroja una larga salida conformada, principalmente, por: la descarga de dependencias de Maven, el proceso de build de la aplicación y la etapa de análisis de Sonar propiamente dicha.
+
+- Esta ejecución puede tomar varios minutos.
+- Guardar este comando, que luego será utilizado.
+
+#### 3- Analizar los resultados de Fiabilidad
+- Encontrar los 3 Bugs en la clase basics/swing/FileIO referidos a Fiabilidad (Reliability).
+- Explicar porque se consideran errores y posible solución a los mismos.
+
+Hay dos tipos de errores encontrados:
+	- El primero consiste en la posibilidad de que alguna de las líneas de código entre la apertura y cierre del archivo de un error y, como consecuencia ese archivo no sea cerrado. No se garantiza que el archivo se cierre. La solución consiste en la incorporación de una cláusula Finally, que acompañados de bloques de try-catch aseguran que el archivo sea cerrado debidamente.
+	- El último presenta una vulnerabilidad por el hecho de que se lee un arreglo de bytes cuya longitud se desconoce, pudiendo producir un buffer overflow en caso de que la copia sea demasiado extensa. La solución radica en asignar un tamaño máximo al buffer y verificar que, tras cada lectura, ese límite no se sobrepase. Dicha solución se puede implementar mediante funciones de copy que contemplen dicha vulnerabilidad.
+
+#### 4- Analizar las Vulnerabilidades de Seguridad
+- Encontrar los 4 Errores de seguridad en la clase basics/jdbc/mysql/MySQLAccess.java
+- Explicar porque se considera código vulnerable y posible solución a los mismos.
+
+Hay dos tipos de vulnerabilidades detectadas
+	- La primera consiste en la presentación en texto plano y harcodeado de credenciales/contraseñas. La solución presentada es la implementación de métodos que encripten los datos sensibles.
+	- La segunda se produce al imprimir el StackTrace de la ejecución al producirse una excepción. Esto puede publicar datos sensibles en la misma aplicación en los momentos de ejecución. La alternativa presentada es el uso de frameworks de Log. 
+
+#### 5- Analizar costo de Mantenimiento
+- Describir alguno de los "Code Smells" en la clase basics/swing/demo/calculator/Calculator.java
+
+Los code smells presentes son: 
+	- código duplicado
+	- violaciones a características estáticas del código (clase que excede la cantidad de padres permitida, uso de carácteres no permitidos en variables, declaraciones de variables multilínea)
+	- innecesario uso de strings, cuando chars es suficiente
+	- presencia de código comentado
+
+- ¿Cuánto tiempo estimado es necesario para llevar esta clase de calificación B a calificación A de acuerdo a esta herramienta?
+
+La herramienta propone que el esfuerzo para lograr una categoría A es 1:32 horas
+
+#### 6- Analizar Complejidad
+- Encontrar la función que posee la mayor complejidad ciclomática en la clase basics/xml/EvalXML.java
+	- ???
+- ¿Qué significa complejidad ciclomática y complejidad cognitiva?
+	- La complejidad cognitiva es una medida de cuan dificil es de entender el flujo de control de un método. En este caso, el máximo permitido es 15 y la función presenta 24, en una presentación de if-else en cascada muy profunda. Que un método tenga alta complejidad cognitiva es un problema porque es dificil de entender y mantener. 
+	- La complejidad ciclomática es una medida que se calcula basándose en el número de caminos que se pueden atravesar en el código. En Java, por ejemplo, se añade complejidad ciclomática (CC) cada vez que se llama a un método o con algunas estructuras de control como: if, while, repeat, for, catch, case; o ante operadores lógicos como && y ||.
+- ¿Cuánto son los valores para esta clase?
+	La complejidad ciclomática es de 54, mientras que la complejidad cognitiva es de 83
+
+#### 7- Corregir Errores
+- Encontrar el código duplicado en la clase scheduler/TaskScheduler.java
+	El código duplicado se encuentra en las funciones "readFile" y "readFileWithPointer"
+- Refactorizar el código para eliminar este código duplicado.
+	???
+- Hacer commit y push del código corregido.
+- Volver a correr el análisis de código con el comando ejecutado en el ejercicio 2.
+- Comprobar que la en esta clase no se reporta más dicho problema.
+
+#### 8- Analizar código de la applicación Payroll
+- Utilizando los pasos de punto 2 correr el análisis para el proyecto ./payroll/server
+- Analizar resultados
+
+```  
+netbook@netbook-pc:~/Guitar/IS3/payroll/server$ mvn verify sonar:sonar \   
+												-Dsonar.projectKey=NNelo_IS3 \
+												-Dsonar.organization=nnelo \   
+												-Dsonar.host.url=https://sonarcloud.io \
+												-Dsonar.login=e302ab970db0aeca67cdff50a5266c7ed92c6b98 \
+												-Dmaven.test.failure.ignore=true
+```
+La mayor cantidad de inconvenientes se encuentra en la clase "EmployeeController.java". Presenta una serie de vulnerabilidades relacionadas a los modificadores de acceso de los atributos/métodos de la clase y otra que acusa el uso de entidades persistentes en el código, en lugar del uso de DTOs. También tiene un conjunto de Code Smells relacionados al uso de "wildcards", denotando que no se afirma el type de las instancias utilizadas.
+Por otro lado, la clase "PayrollApplication.java" presenta un inconveniente de seguridad, relacionado a que el main de la aplicación admite parámetros si es ejecutada en un entorno de consola y, dichos parámetros, no son controlados.
+
+#### 9- Incluir el analisis en el Pipeline
+Agregar el paso de análisis automático de código en Jenkins u otra herramienta de CI/CD para el proyecto ./payroll/server
+???

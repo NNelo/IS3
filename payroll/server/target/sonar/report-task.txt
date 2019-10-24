@@ -1,0 +1,7 @@
+organization=nnelo
+projectKey=NNelo_IS3
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.1720
+dashboardUrl=https://sonarcloud.io/dashboard?id=NNelo_IS3
+ceTaskId=AW3a6q2shTz9TFta--fw
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AW3a6q2shTz9TFta--fw

@@ -2,3 +2,7 @@ hola-mundo/node_modules/*
 tmp.txt
 **/*.drjava
 payroll/server/target/
+
+
+payroll/.project
+payroll/.settings/

@@ -1,64 +1,0 @@
-
-dpayroll.EmployeeController#deleteEmployee(Ljava/lang/Long;)Lorg/springframework/http/ResponseEntity;_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaf f(!"paramAnnotations*™
-paramAnnotations_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaf! f(8…
-∆
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javae e("
-%4"
-__annotate*97
-5org.springframework.web.bind.annotation.DeleteMapping*
-
-idjava.lang.Long»
-≈
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaf" f(/
-%5"
-__annotate*86
-4org.springframework.web.bind.annotation.PathVariable*
-
-idjava.lang.Longò
-ï
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaf5 f(7
-idjava.lang.Long"__annotation*
-
-%4*
-
-%5*
-1*‚
-
-1_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javah h(º
-π
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javah h( 
-%0payroll.EmployeeRepository"__id*.*,
-payroll.EmployeeController"
-
-repository†ù
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javah h(
-
-%1void"Rorg.springframework.data.repository.CrudRepository#deleteById(Ljava/lang/Object;)V*"
- 
-%0payroll.EmployeeRepository*
-
-idjava.lang.Long2deleteById(Ljava/lang/Object;)º
-π
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaj	 j(#<
-%26org.springframework.http.ResponseEntity$HeadersBuilder"korg.springframework.http.ResponseEntity#noContent()Lorg/springframework/http/ResponseEntity$HeadersBuilder;*+")
-'org.springframework.http.ResponseEntity≈¬
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaj	 j(+-
-%3'org.springframework.http.ResponseEntity"gorg.springframework.http.ResponseEntity$HeadersBuilder#build()Lorg/springframework/http/ResponseEntity;*>
-<
-%26org.springframework.http.ResponseEntity$HeadersBuilder2build()"í
-_
-U/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeController.javaj j(,/
--
-%3'org.springframework.http.ResponseEntity:
-idjava.lang.LongB
-payroll.EmployeeController

@@ -1,102 +1,0 @@
-
-fpayroll.EmployeeResourceAssembler#toResource(Lpayroll/Employee;)Lorg/springframework/hateoas/Resource;f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (%"paramAnnotations*€
-paramAnnotationsf
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java% (8∂
-≥
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (
-
-%11"
-__annotate*
-java.lang.Override*
-
-employeepayroll.Employee†
-ù
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java/ (7
-employeepayroll.Employee"__annotation*
-
-%11*
-1*˚
-1f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java ( »
-≈
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java
- (, 
-%0payroll.EmployeeController"vorg.springframework.hateoas.mvc.ControllerLinkBuilder#methodOn(Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;*9"7
-5org.springframework.hateoas.mvc.ControllerLinkBuilder*
-""‘—
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java1 (A
-%1java.lang.Long"(payroll.Employee#getId()Ljava/lang/Long;*
-
-employeepayroll.Employee2getId()¬ø
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java
- (B*
-%2$org.springframework.hateoas.Resource"Vpayroll.EmployeeController#one(Ljava/lang/Long;)Lorg/springframework/hateoas/Resource;*"
- 
-%0payroll.EmployeeController*
-
-%1java.lang.Long2one(Ljava/lang/Long;)õ
-ò
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (C;
-%35org.springframework.hateoas.mvc.ControllerLinkBuilder"áorg.springframework.hateoas.mvc.ControllerLinkBuilder#linkTo(Ljava/lang/Object;)Lorg/springframework/hateoas/mvc/ControllerLinkBuilder;*9"7
-5org.springframework.hateoas.mvc.ControllerLinkBuilder*,
-*
-%2$org.springframework.hateoas.Resource∆√
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (Q&
-%4 org.springframework.hateoas.Link"corg.springframework.hateoas.core.LinkBuilderSupport#withSelfRel()Lorg/springframework/hateoas/Link;*=
-;
-%35org.springframework.hateoas.mvc.ControllerLinkBuilder2withSelfRel()»
-≈
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java
- (, 
-%5payroll.EmployeeController"vorg.springframework.hateoas.mvc.ControllerLinkBuilder#methodOn(Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;*9"7
-5org.springframework.hateoas.mvc.ControllerLinkBuilder*
-""åâ
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java
- (2+
-%6%org.springframework.hateoas.Resources"Gpayroll.EmployeeController#all()Lorg/springframework/hateoas/Resources;*"
- 
-%5payroll.EmployeeController2all()ú
-ô
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (3;
-%75org.springframework.hateoas.mvc.ControllerLinkBuilder"áorg.springframework.hateoas.mvc.ControllerLinkBuilder#linkTo(Ljava/lang/Object;)Lorg/springframework/hateoas/mvc/ControllerLinkBuilder;*9"7
-5org.springframework.hateoas.mvc.ControllerLinkBuilder*-
-+
-%6%org.springframework.hateoas.ResourcesÒÓ
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (H&
-%8 org.springframework.hateoas.Link"qorg.springframework.hateoas.core.LinkBuilderSupport#withRel(Ljava/lang/String;)Lorg/springframework/hateoas/Link;*=
-;
-%75org.springframework.hateoas.mvc.ControllerLinkBuilder*
-	employees2withRel(Ljava/lang/String;)Ω∫
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (*
-%9$org.springframework.hateoas.Resource"$org.springframework.hateoas.Resource˘
-ˆ
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java	 (I
-%10"corg.springframework.hateoas.Resource#<init>(Ljava/lang/Object;[Lorg/springframework/hateoas/Link;)V*,
-*
-%9$org.springframework.hateoas.Resource*
-
-employeepayroll.Employee*(
-&
-%4 org.springframework.hateoas.Link*(
-&
-%8 org.springframework.hateoas.Link"ñ
-f
-\/home/netbook/Guitar/IS3/payroll/server/src/main/java/payroll/EmployeeResourceAssembler.java (J,
-*
-%9$org.springframework.hateoas.Resource:
-employeepayroll.EmployeeB%#
-!payroll.EmployeeResourceAssembler

@@ -51,7 +51,7 @@ class EmployeeController {
 	}
 	
 	@GetMapping("/empleados")
-	Resources<Resource<Employee>> all() {
+	Resources<Resource<Employee>> all2() {
 
 		List<Resource<Employee>> employees = repository.findAll().stream()
 			.map(assembler::toResource)

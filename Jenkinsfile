@@ -43,16 +43,4 @@ node{
             sh label: '', script: 'docker push nnelo/test-java'
         }
     }
-    stage('Deploy'){
-        withCredentials([usernamePassword(credentialsId: 'heroku', passwordVariable: 'password', usernameVariable: 'user')]) {
-           // some block
-           sh label: '', script: '''(
-                echo "${user}"
-                echo "${password}"
-                ) | heroku login'''
-                
-            
-           
-        }
-    }
 }

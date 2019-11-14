@@ -8,6 +8,11 @@ Scenario('Verificar a successful call', async () => {
 	expect(res.status).to.eql(200);
 });
 
+Scenario('Verificar a successful call 2', async () => {
+	const res = await I.sendGetRequest('/todoslosempleados');
+	expect(res.status).to.eql(200);
+});
+
 Scenario('Verificar empleado 1', async () => {
 	const res = await I.sendGetRequest('/employees/1');
 	//console.log(res);

@@ -6,9 +6,9 @@ import org.junit.Test;
 
 public class EmployeeTest {
 
-//    @Test
-//    public void TestBasic() {
-//    	Employee alex = new Employee("alex", "test", "test");
-//    	assertEquals(alex.getName(), "alex test");
-//    }
+    @Test
+    public void TestBasic() {
+    	Employee alex = new Employee("alex", "test", "test");
+    	assertEquals(alex.getName(), "alex test");
+    }
 }

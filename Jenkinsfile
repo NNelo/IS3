@@ -43,4 +43,11 @@ node{
             sh label: '', script: 'docker push nnelo/test-java'
         }
     }
+    stage('Deploy'){
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dPassword', usernameVariable: 'dUsername')]) {
+            sh label: '', script: 'docker login -u ${dUsername} -p ${dPassword}'
+            sh label: '', script: 'docker tag nnelo/test-java:latest registry.heroku.com/stark-anchorage-71315/web'
+            sh label: '', script: 'docker push  registry.heroku.com/stark-anchorage-71315/web'
+        }
+    }
 }

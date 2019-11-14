@@ -48,6 +48,24 @@ node{
             sh label: '', script: 'docker login -u ${dUsername} -p ${dPassword}'
             sh label: '', script: 'docker tag nnelo/test-java:latest registry.heroku.com/stark-anchorage-71315/web'
             sh label: '', script: 'docker push  registry.heroku.com/stark-anchorage-71315/web'
+            sh label: '', script: 'heroku container:release web --app=stark-anchorage-71315'
+            sleep 15
+        }
+    }
+    stage('Testing Deploy') {
+        dir('payroll/intTestHeroku/'){
+                sh label: '', script: 'npm i mocha-junit-reporter mocha-multi --save'
+                sh label: '', script: 'npx codeceptjs run --steps --reporter mocha-multi'
+            
+                archive 'output/result.xml'
+                junit 'output/result.xml'
+            }
+    }
+    stage('Preparing Deploy to Production'){
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dPassword', usernameVariable: 'dUsername')]) {
+            sh label: '', script: 'docker login -u ${dUsername} -p ${dPassword}'
+            sh label: '', script: 'docker tag registry.heroku.com/stark-anchorage-71315/web registry.heroku.com/payroll-production/web'
+            sh label: '', script: 'docker push registry.heroku.com/payroll-production/web'
         }
     }
 }

@@ -10,3 +10,6 @@ payroll/.settings/
 
 payroll/intTest/node_modules
 payroll/intTest/output
+
+payroll/intTestHeroku/node_modules
+payroll/intTestHeroku/output

@@ -44,6 +44,17 @@ class OrderController {
 			linkTo(methodOn(OrderController.class).all()).withSelfRel());
 	}
 
+	@GetMapping("/ordenes")
+	Resources<Resource<Order>> all2() {
+
+		List<Resource<Order>> orders = orderRepository.findAll().stream()
+			.map(assembler::toResource)
+			.collect(Collectors.toList());
+
+		return new Resources<>(orders,
+			linkTo(methodOn(OrderController.class).all()).withSelfRel());
+	}
+	
 	@GetMapping("/orders/{id}")
 	Resource<Order> one(@PathVariable Long id) {
 		return assembler.toResource(

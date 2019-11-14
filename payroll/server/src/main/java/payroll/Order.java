@@ -24,4 +24,13 @@ class Order {
 		this.description = description;
 		this.status = status;
 	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+	
+	public Status getStatus() {
+		return this.status;
+	}
+	
 }

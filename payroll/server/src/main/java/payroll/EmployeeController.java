@@ -49,6 +49,17 @@ class EmployeeController {
 		return new Resources<>(employees,
 			linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
 	}
+	
+	@GetMapping("/empleados")
+	Resources<Resource<Employee>> all() {
+
+		List<Resource<Employee>> employees = repository.findAll().stream()
+			.map(assembler::toResource)
+			.collect(Collectors.toList());
+		
+		return new Resources<>(employees,
+			linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
+	}
 
 	@PostMapping("/employees")
 	ResponseEntity<?> newEmployee(@RequestBody Employee newEmployee) throws URISyntaxException {
